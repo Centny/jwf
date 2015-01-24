@@ -9,6 +9,8 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.cny.jwf.netw.NetwRunnable.EvnListener;
+import org.cny.jwf.netw.NetwRunnable.MsgListener;
 import org.junit.Test;
 
 public class NetwRunnerTest {
@@ -20,17 +22,25 @@ public class NetwRunnerTest {
 	}
 	int mc = 0;
 
+	static interface SS extends MsgListener, EvnListener {
+
+	}
+
 	@Test
 	public void testNetw() throws Exception {
 		PipedOutputStream po = new PipedOutputStream();
 		PipedInputStream pi = new PipedInputStream(po);
-		NetwRunnable.MsgListener ml = new NetwRunnable.MsgListener() {
+		SS ml = new SS() {
 
 			@Override
-			public void onMsg(byte[] m) {
-				System.out.println(new String(m) + "," + m.length);
+			public void onMsg(Bytes m) {
+				System.out.println(m + "," + m.length());
 				mc++;
-				if (new String(m).equals("err")) {
+				m.slice(1);
+//				m.bys();
+				m.length();
+				m.offset();
+				if (m.toString().equals("err")) {
 					throw new RuntimeException("err");
 				}
 			}
@@ -40,8 +50,9 @@ public class NetwRunnerTest {
 				System.out.println(e);
 			}
 		};
-		NetwRunner rw = new NetwRunner(po, pi, ml);
-		rw.setListener(rw.getListener());
+		NetwRunner rw = new NetwRunner(po, pi, ml, ml);
+		rw.setEvnL(ml);
+		rw.setMsgL(ml);
 		rw.setLimit(Netw.MAX_ML);
 		po.write(NetwRunnable.H_MOD);
 		po.flush();
@@ -70,17 +81,19 @@ public class NetwRunnerTest {
 
 		//
 		//
+		System.out.println("---->01");
 		po = new PipedOutputStream();
 		pi = new PipedInputStream(po);
-		rw = new NetwRunner(po, 102400, pi, ml);
+		rw = new NetwRunner(po, 102400, pi, ml, ml);
 		thr = new Thread(rw);
 		thr.start();
 		rw.writem("err".getBytes());
 		thr.join();
 		//
+		System.out.println("---->02");
 		po = new PipedOutputStream();
 		pi = new PipedInputStream(po);
-		rw = new NetwRunner(po, 102400, pi, ml);
+		rw = new NetwRunner(po, 102400, pi, ml, ml);
 		thr = new Thread(rw);
 		thr.start();
 		Thread.sleep(100);
@@ -93,9 +106,10 @@ public class NetwRunnerTest {
 		rw.writem("ssss".getBytes());
 		thr.join();
 		//
+		System.out.println("---->03");
 		po = new PipedOutputStream();
 		pi = new PipedInputStream(po);
-		rw = new NetwRunner(po, 102400, pi, ml);
+		rw = new NetwRunner(po, 102400, pi, ml, ml);
 		thr = new Thread(rw);
 		thr.start();
 		Thread.sleep(100);
@@ -132,6 +146,6 @@ public class NetwRunnerTest {
 		} catch (Exception e) {
 
 		}
-		NetwRW.bstr(new byte[] {});
+		Bytes.bstr(new byte[] {});
 	}
 }

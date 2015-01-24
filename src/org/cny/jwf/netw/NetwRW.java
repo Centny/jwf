@@ -97,26 +97,12 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 		return true;
 	}
 
-	public static String bstr(byte[] bys) {
-		StringBuffer sb = new StringBuffer();
-		sb.append("[");
-		if (bys.length > 0) {
-			sb.append(bys[0]);
-		}
-		for (int i = 1; i < bys.length; i++) {
-			sb.append(',');
-			sb.append(bys[i]);
-		}
-		sb.append("]");
-		return sb.toString();
-	}
-
 	@Override
 	public byte[] readm() throws IOException, ModException {
 		this.readw(this.hbuf);
 		if (!this.valid_h(this.hbuf, 0)) {
 			throw new ModException("reading invalid mod for data:"
-					+ bstr(this.hbuf));
+					+ Bytes.bstr(this.hbuf));
 		}
 		short len = 0;
 		len += this.hbuf[3] << 8;
