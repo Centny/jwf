@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NetwRW extends BufferedOutputStream implements Netw {
@@ -52,9 +51,27 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 
 	@Override
 	public void writem(byte[] m) throws IOException {
-		List<byte[]> ms = new ArrayList<byte[]>();
-		ms.add(m);
-		this.writem(ms);
+		this.writem(m, 0, m.length);
+	}
+
+	@Override
+	public void writem(byte[] m, int off, int len) throws IOException {
+		if (m == null || off < 0 || len < 1 || m.length < off + len) {
+			throw new InvalidParameterException("parameter err:" + m + ","
+					+ off + "," + len);
+		}
+		synchronized (this) {
+			if (len > this.limit) {
+				throw new IOException("message too large, must less "
+						+ this.limit + ", but " + len);
+			}
+			this.wbuf.clear();
+			this.wbuf.put(H_MOD);
+			this.wbuf.putShort((short) len);
+			this.out.write(this.wbuf.array());
+			this.out.write(m, off, len);
+			this.out.flush();
+		}
 	}
 
 	@Override

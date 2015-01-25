@@ -1,17 +1,20 @@
 package org.cny.jwf.netw;
 
 public class Bytes {
+	NetwRunnable nr;
 	byte[] hb;
 	int offs;
 	int len;
 
-	public Bytes(byte[] bys) {
+	public Bytes(NetwRunnable nr, byte[] bys) {
+		this.nr = nr;
 		this.hb = bys;
 		this.offs = 0;
 		this.len = bys.length;
 	}
 
-	public Bytes(byte[] bys, int offs, int len) {
+	public Bytes(NetwRunnable nr, byte[] bys, int offs, int len) {
+		this.nr = nr;
 		this.hb = bys;
 		this.offs = offs;
 		this.len = len;
@@ -25,16 +28,16 @@ public class Bytes {
 		return this.offs;
 	}
 
-	// public byte[] bys() {
-	// return this.hb;
-	// }
+	public byte[] bys() {
+		return this.hb;
+	}
 
 	public Bytes slice(int offs) {
 		return this.slice(offs, this.len - (offs - this.offs));
 	}
 
 	public Bytes slice(int offs, int len) {
-		return new Bytes(this.hb, offs, len);
+		return new Bytes(this.nr, this.hb, offs, len);
 	}
 
 	@Override
@@ -48,6 +51,10 @@ public class Bytes {
 
 	public byte get(int idx) {
 		return this.hb[idx];
+	}
+
+	public <T> T V(Class<T> cls) {
+		return this.nr.getConverter().B2V(this, cls);
 	}
 
 	public static String bstr(byte[] bys) {

@@ -17,6 +17,8 @@ public interface Netw {
 
 	void writem(byte[] m) throws IOException;
 
+	void writem(byte[] m, int offs, int len) throws IOException;
+
 	void writem(List<byte[]> ms) throws IOException;
 
 	public static class ModException extends Exception {

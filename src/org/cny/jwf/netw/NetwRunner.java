@@ -1,5 +1,6 @@
 package org.cny.jwf.netw;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -11,6 +12,7 @@ public class NetwRunner extends NetwRW implements NetwRunnable {
 	//
 	MsgListener msgl;
 	EvnListener evnl;
+	Converter c;
 	private boolean running;
 
 	public NetwRunner(OutputStream out, InputStream in, MsgListener msg,
@@ -47,16 +49,24 @@ public class NetwRunner extends NetwRW implements NetwRunnable {
 
 	private void run_c() throws Exception {
 		while (this.running) {
-			System.out.println(this.running);
-
 			try {
 				byte[] m = this.readm();
-				this.msgl.onMsg(new Bytes(m));
+				this.msgl.onMsg(new Bytes(this, m));
 			} catch (ModException e) {
 				L.error(e.getMessage());
 				continue;
 			}
 		}
+	}
+
+	@Override
+	public void writem(Bytes b) throws IOException {
+		this.writem(b.bys(), b.offset(), b.length());
+	}
+
+	@Override
+	public void writev(Object v) throws IOException {
+		this.writem(this.c.V2B(this, v));
 	}
 
 	@Override
@@ -67,6 +77,16 @@ public class NetwRunner extends NetwRW implements NetwRunnable {
 	@Override
 	public void setMsgL(MsgListener l) {
 		this.msgl = l;
+	}
+
+	@Override
+	public void setConverter(Converter c) {
+		this.c = c;
+	}
+
+	@Override
+	public Converter getConverter() {
+		return this.c;
 	}
 
 }

@@ -9,6 +9,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
+import org.cny.jwf.netw.NetwRunnable.Converter;
 import org.cny.jwf.netw.NetwRunnable.EvnListener;
 import org.cny.jwf.netw.NetwRunnable.MsgListener;
 import org.junit.Test;
@@ -37,10 +38,12 @@ public class NetwRunnerTest {
 				System.out.println(m + "," + m.length());
 				mc++;
 				m.slice(1);
-//				m.bys();
+				// m.bys();
 				m.length();
 				m.offset();
-				if (m.toString().equals("err")) {
+				m.toBs();
+				m.get(0);
+				if (m.V(String.class).equals("err")) {
 					throw new RuntimeException("err");
 				}
 			}
@@ -51,6 +54,31 @@ public class NetwRunnerTest {
 			}
 		};
 		NetwRunner rw = new NetwRunner(po, pi, ml, ml);
+		rw.setConverter(new Converter() {
+
+			@Override
+			public Bytes V2B(NetwRunnable nr, Object o) {
+				System.out.println("--->V2B");
+				try {
+					return new Bytes(nr, o.toString().getBytes());
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+
+			@SuppressWarnings("unchecked")
+			@Override
+			public <T> T B2V(Bytes bys, Class<T> cls) {
+				System.out.println("--->B2V");
+				try {
+					return (T) new String(bys.bys(), bys.offset(), bys.length());
+				} catch (Exception e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+		});
 		rw.setEvnL(ml);
 		rw.setMsgL(ml);
 		rw.setLimit(Netw.MAX_ML);
@@ -67,8 +95,12 @@ public class NetwRunnerTest {
 		po.write(new byte[] { 0, 4, '1', '2', '3', '4' });
 		po.flush();
 		rw.writem("abcddd".getBytes());
+		rw.writev("---->");
+		List<byte[]> tms = new ArrayList<byte[]>();
+		tms.add("sssss".getBytes());
+		rw.writem(tms);
 		// po.flush();
-		while (mc < 4) {
+		while (mc < 6) {
 			System.out.println("--->" + mc);
 			Thread.sleep(1000);
 		}
@@ -121,7 +153,18 @@ public class NetwRunnerTest {
 			rw.setLimit(10);
 			rw.writem(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 });
 		} catch (Exception e) {
-
+		}
+		try {
+			rw.setLimit(10);
+			rw.writem(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }, 0, 13);
+		} catch (Exception e) {
+		}
+		try {
+			rw.setLimit(9);
+			List<byte[]> ms = new ArrayList<byte[]>();
+			ms.add(new byte[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 });
+			rw.writem(ms);
+		} catch (Exception e) {
 		}
 		try {
 			rw.setLimit(9);
@@ -130,21 +173,18 @@ public class NetwRunnerTest {
 			ms.add(new byte[] { 1, 2, 3, 4, 5 });
 			rw.writem(ms);
 		} catch (Exception e) {
-
 		}
 		try {
 			rw.setLimit(9);
 			List<byte[]> ms = new ArrayList<byte[]>();
 			rw.writem(ms);
 		} catch (Exception e) {
-
 		}
 		try {
 			rw.setLimit(9);
 			List<byte[]> ms = null;
 			rw.writem(ms);
 		} catch (Exception e) {
-
 		}
 		Bytes.bstr(new byte[] {});
 	}
