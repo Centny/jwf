@@ -8,18 +8,15 @@ import java.nio.ByteBuffer;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+import org.cny.jwf.netw.r.Msg;
+import org.cny.jwf.netw.r.Netw;
+
 public class NetwRW extends BufferedOutputStream implements Netw {
 	private int limit;
 	private InputStream in;
 	// private Writer out;
 	private final ByteBuffer wbuf = ByteBuffer.allocate(5);
 	private final byte[] hbuf = new byte[5];
-
-	public NetwRW(OutputStream out, InputStream in) {
-		super(out);
-		this.in = in;
-		this.limit = MAX_ML;
-	}
 
 	public NetwRW(OutputStream out, int sz, InputStream in) {
 		super(out, sz);
@@ -119,7 +116,7 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 		this.readw(this.hbuf);
 		if (!this.valid_h(this.hbuf, 0)) {
 			throw new ModException("reading invalid mod for data:"
-					+ Bytes.bstr(this.hbuf));
+					+ NetwM.bstr(this.hbuf));
 		}
 		short len = 0;
 		len += this.hbuf[3] << 8;
@@ -127,5 +124,15 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 		byte[] tbuf = new byte[len];
 		this.readw(tbuf);
 		return tbuf;
+	}
+
+	@Override
+	public void writeM(Msg b) throws IOException {
+		this.writem(b.bys(), b.offset(), b.length());
+	}
+
+	@Override
+	public Msg readM() throws IOException, ModException {
+		return new NetwM(this, this.readm());
 	}
 }

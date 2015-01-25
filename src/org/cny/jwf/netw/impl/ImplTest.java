@@ -1,6 +1,6 @@
 package org.cny.jwf.netw.impl;
 
-import org.cny.jwf.netw.Bytes;
+import org.cny.jwf.netw.NetwM;
 import org.junit.Test;
 
 public class ImplTest {
@@ -11,7 +11,7 @@ public class ImplTest {
 		QueueH qh = new QueueH();
 		qh.addh(new OBDH());
 		obdh.addh((byte) 0, qh);
-		obdh.onMsg(new Bytes(null, new byte[] { 0, 2, 3, 4, 5 }));
+		obdh.onMsg(null, new NetwM(null, new byte[] { 0, 2, 3, 4, 5 }));
 
 	}
 }

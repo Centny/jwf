@@ -1,20 +1,23 @@
 package org.cny.jwf.netw;
 
-public class Bytes {
-	NetwRunnable nr;
+import org.cny.jwf.netw.r.Msg;
+import org.cny.jwf.netw.r.Netw;
+
+public class NetwM implements Msg {
+	Netw nw;
 	byte[] hb;
 	int offs;
 	int len;
 
-	public Bytes(NetwRunnable nr, byte[] bys) {
-		this.nr = nr;
+	public NetwM(Netw nw, byte[] bys) {
+		this.nw = nw;
 		this.hb = bys;
 		this.offs = 0;
 		this.len = bys.length;
 	}
 
-	public Bytes(NetwRunnable nr, byte[] bys, int offs, int len) {
-		this.nr = nr;
+	public NetwM(Netw nw, byte[] bys, int offs, int len) {
+		this.nw = nw;
 		this.hb = bys;
 		this.offs = offs;
 		this.len = len;
@@ -32,12 +35,21 @@ public class Bytes {
 		return this.hb;
 	}
 
-	public Bytes slice(int offs) {
+	public Msg slice(int offs) {
 		return this.slice(offs, this.len - (offs - this.offs));
 	}
 
-	public Bytes slice(int offs, int len) {
-		return new Bytes(this.nr, this.hb, offs, len);
+	public Msg slice(int offs, int len) {
+		return new NetwM(this.nw, this.hb, offs, len);
+	}
+
+	@Override
+	public Netw netw() {
+		return this.nw;
+	}
+
+	public byte get(int idx) {
+		return this.hb[idx];
 	}
 
 	@Override
@@ -45,17 +57,9 @@ public class Bytes {
 		return new String(this.hb, this.offs, this.len);
 	}
 
-	public String toBs() {
-		return bstr(this.hb, this.offs, this.len);
-	}
-
-	public byte get(int idx) {
-		return this.hb[idx];
-	}
-
-	public <T> T V(Class<T> cls) {
-		return this.nr.getConverter().B2V(this, cls);
-	}
+//	public String toBs() {
+//		return bstr(this.hb, this.offs, this.len);
+//	}
 
 	public static String bstr(byte[] bys) {
 		return bstr(bys, 0, bys.length);
@@ -73,4 +77,5 @@ public class Bytes {
 		sb.append("]");
 		return sb.toString();
 	}
+
 }

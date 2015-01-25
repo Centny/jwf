@@ -1,11 +1,11 @@
-package org.cny.jwf.netw;
+package org.cny.jwf.netw.r;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface Netw {
-	static final byte[] H_MOD = new byte[] { '^', '~', '^' };
-	static final int MAX_ML = 102400;
+	public static final byte[] H_MOD = new byte[] { '^', '~', '^' };
+	public static final int MAX_ML = 102400;
 
 	void setLimit(int l);
 
@@ -15,11 +15,15 @@ public interface Netw {
 
 	byte[] readm() throws IOException, ModException;
 
+	Msg readM() throws IOException, ModException;
+
 	void writem(byte[] m) throws IOException;
 
 	void writem(byte[] m, int offs, int len) throws IOException;
 
 	void writem(List<byte[]> ms) throws IOException;
+
+	void writeM(Msg b) throws IOException;
 
 	public static class ModException extends Exception {
 
