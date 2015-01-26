@@ -14,6 +14,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class RC implements CmdListener {
+
+	public class CmdL implements CmdListener {
+		Cmd m = null;
+
+		@Override
+		public void onCmd(NetwRunnable nr, Cmd m) {
+			synchronized (this) {
+				this.m = m;
+				this.notify();
+			}
+		}
+	}
+
 	private static Logger L = LoggerFactory.getLogger(RC.class);
 	private Map<Short, CmdListener> hs = new HashMap<Short, CmdListener>();
 	private Netw rw;
@@ -23,8 +36,18 @@ public class RC implements CmdListener {
 		this.rw = rw;
 	}
 
+	public Cmd exec(byte m, Cmd args) throws IOException, InterruptedException {
+		CmdL cl = new CmdL();
+		synchronized (cl) {
+			this.exec(m, args, cl);
+			cl.wait();
+		}
+		return cl.m;
+	}
+
 	public void exec(byte m, Cmd args, CmdListener l) throws IOException {
-		byte[] bs = new byte[] { (byte) (this.ei_cc >> 8), (byte) this.ei_cc, m };
+		byte[] bs = new byte[] { (byte) (this.ei_cc >> 8), (byte) this.ei_cc,
+				0, m };
 		List<Cmd> ms = new ArrayList<Cmd>();
 		ms.add(this.rw.newM(bs, 0, bs.length));
 		ms.add(args);

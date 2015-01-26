@@ -1,6 +1,7 @@
 package org.cny.jwf.netw;
 
 import java.io.BufferedOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,6 +37,9 @@ public class NetwRWbase extends BufferedOutputStream implements NetwBase {
 		int rlen = 0;
 		while (len > 0) {
 			rlen = this.in.read(buf, off, len);
+			if (rlen < 0) {
+				throw new EOFException();
+			}
 			off += rlen;
 			len -= rlen;
 			rlen = 0;

@@ -33,7 +33,17 @@ public class IMCTest {
 		PipedInputStream pi;
 
 		public Br(MsgListener l) throws IOException {
-			super(l);
+			super(new EvnListener() {
+
+				@Override
+				public void onCon(NetwRunnable nr, Netw nw) {
+				}
+
+				@Override
+				public void onErr(NetwRunnable nr, Throwable e) {
+					System.err.println(e.getMessage());
+				}
+			}, l);
 			this.po = new PipedOutputStream();
 			this.pi = new PipedInputStream(this.po);
 		}
@@ -64,15 +74,6 @@ public class IMCTest {
 				e.printStackTrace();
 				return null;
 			}
-		}
-
-		@Override
-		public void onCon(NetwRunnable nr, Netw nw) {
-		}
-
-		@Override
-		public void onErr(NetwRunnable nr, Throwable e) {
-			System.err.println(e.getMessage());
 		}
 
 		@Override
@@ -110,7 +111,7 @@ public class IMCTest {
 			@Override
 			public void onMsg(Msg m) {
 				System.out.println("Msg->" + m.r);
-				System.out.println("Msg->" + new String(m.c));
+				System.out.println("Msg->" + new String(m.cdata));
 			}
 		});
 		Thread thr = new Thread(br);

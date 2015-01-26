@@ -1,5 +1,8 @@
 package org.cny.jwf.netw.r;
 
+import java.io.EOFException;
+import java.net.SocketException;
+
 import org.cny.jwf.netw.r.Netw.ModException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +41,10 @@ public abstract class NetwRunner implements NetwRunnable {
 		this.running = true;
 		while (this.running) {
 			try {
-				this.msgl.onCmd(this, nw.readM());
+				Cmd cmd = nw.readM();
+				this.msgl.onCmd(this, cmd);
+			} catch (SocketException | EOFException e) {
+				break;
 			} catch (ModException e) {
 				L.error(e.getMessage());
 				continue;
@@ -58,5 +64,5 @@ public abstract class NetwRunner implements NetwRunnable {
 		}
 	}
 
-	protected abstract Netw createNetw() throws ModException;
+	protected abstract Netw createNetw() throws Exception;
 }

@@ -1,9 +1,8 @@
 package org.cny.jwf.netw;
 
-import org.cny.jwf.netw.r.Converter;
 import org.cny.jwf.netw.r.Cmd;
+import org.cny.jwf.netw.r.Converter;
 import org.cny.jwf.netw.r.Netw;
-import org.cny.jwf.netw.r.Netw.ModException;
 import org.cny.jwf.netw.r.NetwBase;
 import org.cny.jwf.netw.r.NetwVer;
 
@@ -32,11 +31,11 @@ public abstract class RWRunnerv extends RWRunner implements Converter {
 	}
 
 	@Override
-	protected Netw createNetw() throws ModException {
+	protected Netw createNetw() throws Exception {
 		this.rw = new NetwRWv_i(this.createNetwBase());
 		return this.rw;
 	}
 
-	protected abstract NetwBase createNetwBase();
+	protected abstract NetwBase createNetwBase() throws Exception;
 
 }

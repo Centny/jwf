@@ -8,14 +8,12 @@ import org.cny.jwf.netw.impl.OBDH;
 import org.cny.jwf.netw.impl.RCv;
 import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.Netw;
-import org.cny.jwf.netw.r.Netw.ModException;
 import org.cny.jwf.netw.r.NetwBase;
 import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.CmdListener;
-import org.cny.jwf.netw.r.NetwRunnable.EvnListener;
 import org.cny.jwf.netw.r.NetwVer;
 
-public abstract class IMC extends RWRunnerv implements EvnListener, CmdListener {
+public abstract class IMC extends RWRunnerv implements CmdListener {
 	public static interface MsgListener {
 		public void onMsg(Msg m);
 	}
@@ -29,16 +27,16 @@ public abstract class IMC extends RWRunnerv implements EvnListener, CmdListener 
 	private MsgListener l;
 	private NetwVer nv;
 
-	public IMC(MsgListener l) {
+	public IMC(EvnListener e, MsgListener l) {
 		super(null, null);
 		this.obdh = new OBDH();
-		this.evnl = this;
+		this.evnl = e;
 		this.msgl = this.obdh;
 		this.l = l;
 	}
 
 	@Override
-	protected Netw createNetw() throws ModException {
+	protected Netw createNetw() throws Exception {
 		NetwBase nb = this.createNetwBase();
 		this.rc = new RCv(new NetwRWv_i(new OBDC(nb, MK_NRC)), this);
 		this.rw = this.nv = new NetwRWv_i(new OBDC(nb, MK_NIM));
@@ -56,12 +54,24 @@ public abstract class IMC extends RWRunnerv implements EvnListener, CmdListener 
 		this.nv.writev(new Msg(r, t, c));
 	}
 
+	public void writem(String[] r, int t, byte[] c) throws IOException {
+		this.writem(r, (byte) t, c);
+	}
+
 	public void li(Object args, CmdListener l) throws IOException {
 		this.rc.exec(MK_NRC_LI, args, l);
 	}
 
+	public Cmd li(Object args) throws IOException, InterruptedException {
+		return this.rc.exec(MK_NRC_LI, args);
+	}
+
 	public void lo(Object args, CmdListener l) throws IOException {
 		this.rc.exec(MK_NRC_LO, args, l);
+	}
+
+	public Cmd lo(Object args) throws IOException, InterruptedException {
+		return this.rc.exec(MK_NRC_LO, args);
 	}
 
 }

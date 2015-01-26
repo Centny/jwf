@@ -1,7 +1,6 @@
 package org.cny.jwf.netw;
 
 import org.cny.jwf.netw.r.Netw;
-import org.cny.jwf.netw.r.Netw.ModException;
 import org.cny.jwf.netw.r.NetwRunner;
 
 public abstract class RWRunner extends NetwRunner {
@@ -12,7 +11,7 @@ public abstract class RWRunner extends NetwRunner {
 	}
 
 	@Override
-	protected abstract Netw createNetw() throws ModException;
+	protected abstract Netw createNetw() throws Exception;
 
 	@Override
 	public Netw netw() {
