@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 public abstract class NetwRunner implements NetwRunnable {
 	private static Logger L = LoggerFactory.getLogger(NetwRunner.class);
 	//
-	MsgListener msgl;
-	EvnListener evnl;
-	private boolean running;
+	protected CmdListener msgl;
+	protected EvnListener evnl;
+	protected boolean running;
 
-	public NetwRunner(MsgListener msg, EvnListener evn) {
+	public NetwRunner(CmdListener msg, EvnListener evn) {
 		this.msgl = msg;
 		this.evnl = evn;
 	}
@@ -22,7 +22,7 @@ public abstract class NetwRunner implements NetwRunnable {
 		try {
 			this.run_c();
 		} catch (Throwable e) {
-			this.evnl.onErr(this, e);
+			L.error("running err:", e);
 		}
 		this.running = false;
 		L.debug("Netw stopped");
@@ -30,7 +30,6 @@ public abstract class NetwRunner implements NetwRunnable {
 
 	public void stop() {
 		this.running = false;
-		System.out.println(this.running);
 	}
 
 	private void run_c() throws Exception {
@@ -39,10 +38,12 @@ public abstract class NetwRunner implements NetwRunnable {
 		this.running = true;
 		while (this.running) {
 			try {
-				this.msgl.onMsg(this, nw.readM());
+				this.msgl.onCmd(this, nw.readM());
 			} catch (ModException e) {
 				L.error(e.getMessage());
 				continue;
+			} catch (Throwable e) {
+				this.evnl.onErr(this, e);
 			}
 		}
 	}

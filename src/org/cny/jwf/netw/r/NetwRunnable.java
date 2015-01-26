@@ -7,8 +7,8 @@ public interface NetwRunnable extends Runnable {
 		void onErr(NetwRunnable nr, Throwable e);
 	}
 
-	public static interface MsgListener {
-		void onMsg(NetwRunnable nr, Msg m);
+	public static interface CmdListener {
+		void onCmd(NetwRunnable nr, Cmd m);
 	}
 
 	Netw netw();

@@ -3,21 +3,21 @@ package org.cny.jwf.netw.impl;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.cny.jwf.netw.r.Msg;
+import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.NetwRunnable;
-import org.cny.jwf.netw.r.NetwRunnable.MsgListener;
+import org.cny.jwf.netw.r.NetwRunnable.CmdListener;
 
-public class QueueH implements MsgListener {
-	private List<MsgListener> qs = new LinkedList<MsgListener>();
+public class QueueH implements CmdListener {
+	private List<CmdListener> qs = new LinkedList<CmdListener>();
 
 	@Override
-	public void onMsg(NetwRunnable nr, Msg m) {
-		for (MsgListener ml : this.qs) {
-			ml.onMsg(nr, m);
+	public void onCmd(NetwRunnable nr, Cmd m) {
+		for (CmdListener ml : this.qs) {
+			ml.onCmd(nr, m);
 		}
 	}
 
-	public void addh(MsgListener l) {
+	public void addh(CmdListener l) {
 		this.qs.add(l);
 	}
 

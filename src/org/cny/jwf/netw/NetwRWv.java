@@ -1,16 +1,16 @@
 package org.cny.jwf.netw;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 
-import org.cny.jwf.netw.r.Msg;
+import org.cny.jwf.netw.r.Cmd;
+import org.cny.jwf.netw.r.NetwBase;
 import org.cny.jwf.netw.r.NetwVer;
 
 public abstract class NetwRWv extends NetwRW implements NetwVer {
 
-	public NetwRWv(OutputStream out, int sz, InputStream in) {
-		super(out, sz, in);
+
+	public NetwRWv(NetwBase rwb) {
+		super(rwb);
 	}
 
 	@Override
@@ -19,7 +19,7 @@ public abstract class NetwRWv extends NetwRW implements NetwVer {
 	}
 
 	@Override
-	public Msg readM() throws IOException, ModException {
-		return new NetwMv(this, this.readm());
+	public Cmd newM(byte[] m, int off, int len) {
+		return new NetwMv(this, m, off, len);
 	}
 }

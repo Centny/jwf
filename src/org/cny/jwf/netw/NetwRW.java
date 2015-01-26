@@ -1,32 +1,21 @@
 package org.cny.jwf.netw;
 
-import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.ByteBuffer;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.cny.jwf.netw.r.Msg;
+import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.Netw;
+import org.cny.jwf.netw.r.NetwBase;
 
-public class NetwRW extends BufferedOutputStream implements Netw {
-	private int limit;
-	private InputStream in;
-	// private Writer out;
-	private final ByteBuffer wbuf = ByteBuffer.allocate(5);
+public abstract class NetwRW implements Netw {
 	private final byte[] hbuf = new byte[5];
+	protected NetwBase rwb;
 
-	public NetwRW(OutputStream out, int sz, InputStream in) {
-		super(out, sz);
-		this.in = in;
-		this.limit = MAX_ML;
-	}
-
-	@Override
-	public void setLimit(int l) {
-		this.limit = l;
+	public NetwRW(NetwBase rwb) {
+		super();
+		this.rwb = rwb;
 	}
 
 	@Override
@@ -35,15 +24,8 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 	}
 
 	@Override
-	public int readw(byte[] buf, int off, int len) throws IOException {
-		int rlen = 0;
-		while (len > 0) {
-			rlen = this.in.read(buf, off, len);
-			off += rlen;
-			len -= rlen;
-			rlen = 0;
-		}
-		return len;
+	public void writem(byte[] m, int offs, int len) throws IOException {
+		this.writeM(this.newM(m, offs, len));
 	}
 
 	@Override
@@ -52,52 +34,22 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 	}
 
 	@Override
-	public void writem(byte[] m, int off, int len) throws IOException {
-		if (m == null || off < 0 || len < 1 || m.length < off + len) {
-			throw new InvalidParameterException("parameter err:" + m + ","
-					+ off + "," + len);
-		}
-		synchronized (this) {
-			if (len > this.limit) {
-				throw new IOException("message too large, must less "
-						+ this.limit + ", but " + len);
-			}
-			this.wbuf.clear();
-			this.wbuf.put(H_MOD);
-			this.wbuf.putShort((short) len);
-			this.out.write(this.wbuf.array());
-			this.out.write(m, off, len);
-			this.out.flush();
-		}
-	}
-
-	@Override
 	public void writem(List<byte[]> ms) throws IOException {
 		if (ms == null || ms.isEmpty()) {
 			throw new InvalidParameterException("data lise is null or empty");
 		}
-		synchronized (this) {
-			short len = 0;
-			for (byte[] m : ms) {
-				if (m.length > this.limit) {
-					throw new IOException("message too large, must less "
-							+ this.limit + ", but " + m.length);
-				}
-				len += m.length;
-			}
-			if (len > this.limit) {
-				throw new IOException("message too large, must less "
-						+ this.limit + ", but " + len);
-			}
-			this.wbuf.clear();
-			this.wbuf.put(H_MOD);
-			this.wbuf.putShort(len);
-			this.out.write(this.wbuf.array());
-			for (byte[] m : ms) {
-				this.out.write(m);
-			}
-			this.out.flush();
+		List<Cmd> tms = new ArrayList<Cmd>();
+		for (byte[] m : ms) {
+			tms.add(this.newM(m, 0, m.length));
 		}
+		this.writeM(tms);
+	}
+
+	@Override
+	public void writeM(Cmd b) throws IOException {
+		List<Cmd> ms = new ArrayList<Cmd>();
+		ms.add(b);
+		this.writeM(ms);
 	}
 
 	private boolean valid_h(byte[] bys, int offs) {
@@ -127,12 +79,23 @@ public class NetwRW extends BufferedOutputStream implements Netw {
 	}
 
 	@Override
-	public void writeM(Msg b) throws IOException {
-		this.writem(b.bys(), b.offset(), b.length());
+	public Cmd readM() throws IOException, ModException {
+		byte[] m = this.readm();
+		return this.newM(m, 0, m.length);
 	}
 
 	@Override
-	public Msg readM() throws IOException, ModException {
-		return new NetwM(this, this.readm());
+	public void setLimit(int l) {
+		this.rwb.setLimit(l);
+	}
+
+	@Override
+	public int readw(byte[] buf, int off, int len) throws IOException {
+		return this.rwb.readw(buf, off, len);
+	}
+
+	@Override
+	public void writeM(List<Cmd> ms) throws IOException {
+		this.rwb.writeM(ms);
 	}
 }
