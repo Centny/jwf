@@ -5,6 +5,9 @@
 	<property file="build.properties" />
 	<property name="JaCoCo.enabled" value="true" />
 	<property name="JaCoCo.exec.file" location="${jacoco.dir}/jacoco.exec" />
+	<property name="pub.dir" value="${build.dir}/pub" />
+	<property name="pub.file" value="${pub.dir}/${ant.project.name}-${version}.jar" />
+
 	<path id="JaCoCo.classpath">
 		<fileset dir="lib_b/JaCoCo">
 			<include name="*.jar" />
@@ -58,15 +61,23 @@
 	<!-- public jar -->
 	<target name="pub.jar" depends="compile">
 		<mkdir dir="${build.dir}/pkg" />
+		<mkdir dir="${build.dir}/pub" />
 		<copy todir="${build.dir}/pkg">
 			<fileset dir="${classes.dir}">
 				<exclude name="**/test/**" />
 				<exclude name="**/*Test*" />
 			</fileset>
 		</copy>
-		<jar basedir="${build.dir}/pkg" file="${build.dir}/${ant.project.name}-${version}.jar" />
+		<jar basedir="${build.dir}/pkg" file="${pub.file}" />
 	</target>
 
+	<target name="pub.awf.jar" depends="pub.jar">
+		<copy todir="../awf/libs">
+			<fileset dir="${pub.dir}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+	</target>
 	<!-- instrument classes -->
 	<target name="instrument" depends="pub.jar">
 		<!--
