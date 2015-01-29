@@ -71,7 +71,7 @@ public class NetwM implements Cmd {
 
 	public static String bstr(byte[] bys, int offset, int len) {
 		StringBuffer sb = new StringBuffer();
-		sb.append("[");
+		sb.append('[');
 		if (bys.length > 0 && offset < bys.length && offset > -1 && len > 0) {
 			sb.append(bys[offset]);
 			for (int i = offset + 1; i < len + offset; i++) {
@@ -79,7 +79,7 @@ public class NetwM implements Cmd {
 				sb.append(bys[i]);
 			}
 		}
-		sb.append("]");
+		sb.append(']');
 		return sb.toString();
 	}
 
@@ -150,8 +150,10 @@ public class NetwM implements Cmd {
 
 	@Override
 	public short shortv(int off) {
-		return (short) ((this.hb[this.off + off] << 8) + (this.hb[this.off
-				+ off + 1]));
+		short val = 0;
+		val += this.hb[this.off + off] << 8;
+		val += this.hb[this.off + off + 1];
+		return val;
 	}
 
 	@Override

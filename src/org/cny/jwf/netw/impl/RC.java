@@ -15,6 +15,11 @@ import org.slf4j.LoggerFactory;
 
 public class RC implements CmdListener {
 
+	private static final Logger L = LoggerFactory.getLogger(RC.class);
+	private final Map<Short, CmdListener> hs = new HashMap<Short, CmdListener>();
+	private final Netw rw;
+	private short ei_cc = 1;
+
 	public class CmdL implements CmdListener {
 		Cmd m = null;
 
@@ -22,15 +27,10 @@ public class RC implements CmdListener {
 		public void onCmd(NetwRunnable nr, Cmd m) {
 			synchronized (this) {
 				this.m = m;
-				this.notify();
+				this.notifyAll();
 			}
 		}
 	}
-
-	private static Logger L = LoggerFactory.getLogger(RC.class);
-	private Map<Short, CmdListener> hs = new HashMap<Short, CmdListener>();
-	private Netw rw;
-	private short ei_cc = 1;
 
 	public RC(Netw rw) {
 		this.rw = rw;

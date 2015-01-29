@@ -13,7 +13,11 @@ public class Msg {
 	public byte[] cdata;
 	public Cmd cmd;
 
+	/**
+	 * the empty constructor.
+	 */
 	public Msg() {
+		//nothing init.
 	}
 
 	public Msg(String[] r, byte t, byte[] c) {

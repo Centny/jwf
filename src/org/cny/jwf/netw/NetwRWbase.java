@@ -35,13 +35,15 @@ public class NetwRWbase extends BufferedOutputStream implements NetwBase {
 	@Override
 	public int readw(byte[] buf, int off, int len) throws IOException {
 		int rlen = 0;
-		while (len > 0) {
-			rlen = this.in.read(buf, off, len);
+		int toff = off;
+		int tlen = len;
+		while (tlen > 0) {
+			rlen = this.in.read(buf, toff, tlen);
 			if (rlen < 0) {
 				throw new EOFException();
 			}
-			off += rlen;
-			len -= rlen;
+			toff += rlen;
+			tlen -= rlen;
 			rlen = 0;
 		}
 		return len;

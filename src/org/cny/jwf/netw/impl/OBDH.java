@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class OBDH implements CmdListener {
-	private static Logger L = LoggerFactory.getLogger(OBDH.class);
-	private Map<Byte, CmdListener> hs = new HashMap<Byte, CmdListener>();
+	private static final Logger L = LoggerFactory.getLogger(OBDH.class);
+	private final Map<Byte, CmdListener> hs = new HashMap<Byte, CmdListener>();
 
 	@Override
 	public void onCmd(NetwRunnable nr, Cmd m) {

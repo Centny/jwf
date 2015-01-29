@@ -14,18 +14,19 @@ import org.cny.jwf.netw.r.NetwRunnable.CmdListener;
 import org.cny.jwf.netw.r.NetwVer;
 
 public abstract class IMC extends RWRunnerv implements CmdListener {
-	public static interface MsgListener {
-		public void onMsg(Msg m);
-	}
 
 	public static final byte MK_NIM = 0;
 	public static final byte MK_NRC = 4;
 	public static final byte MK_NRC_LI = 10;
 	public static final byte MK_NRC_LO = 20;
-	private OBDH obdh;
+	private final OBDH obdh;
 	private RCv rc;
-	private MsgListener l;
+	private final MsgListener l;
 	private NetwVer nv;
+
+	public static interface MsgListener {
+		public void onMsg(Msg m);
+	}
 
 	public IMC(EvnListener e, MsgListener l) {
 		super(null, null);

@@ -8,7 +8,7 @@ import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.CmdListener;
 
 public class QueueH implements CmdListener {
-	private List<CmdListener> qs = new LinkedList<CmdListener>();
+	private final List<CmdListener> qs = new LinkedList<CmdListener>();
 
 	@Override
 	public void onCmd(NetwRunnable nr, Cmd m) {

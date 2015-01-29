@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="jwf" default="main" basedir=".">
+	<property environment="env" />
+	<property file="build.properties" />
+	<property name="JaCoCo.enabled" value="true" />
+	<property name="JaCoCo.exec.file" location="${jacoco.dir}/jacoco.exec" />
+	<path id="JaCoCo.classpath">
+		<fileset dir="lib_b/JaCoCo">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<path id="app.classpath">
+		<fileset dir="${app.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<path id="run.classpath">
+		<pathelement location="${instrumented.dir}" />
+	</path>
+	<path id="test.classpath">
+		<fileset dir="lib_b">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+	<tstamp>
+		<format property="now.v" pattern="yyyyMMdd" locale="en,US" />
+	</tstamp>
+	<taskdef resource="org/jacoco/ant/antlib.xml">
+		<classpath refid="JaCoCo.classpath" />
+	</taskdef>
+
+	<target name="clean">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="init" depends="clean">
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${instrumented.dir}" />
+		<mkdir dir="${reports.dir}/junit-xml" />
+		<mkdir dir="${reports.dir}/junit-html" />
+		<mkdir dir="${reports.dir}/pmd" />
+		<mkdir dir="${reports.dir}/checkstyle" />
+		<mkdir dir="${jacoco.dir}" />
+	</target>
+	<target name="compile" depends="init">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" includeantruntime="false">
+			<classpath refid="test.classpath" />
+			<classpath refid="app.classpath" />
+		</javac>
+		<copy todir="${classes.dir}">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- public jar -->
+	<target name="pub.jar" depends="compile">
+		<mkdir dir="${build.dir}/pkg" />
+		<copy todir="${build.dir}/pkg">
+			<fileset dir="${classes.dir}">
+				<exclude name="**/test/**" />
+				<exclude name="**/*Test*" />
+			</fileset>
+		</copy>
+		<jar basedir="${build.dir}/pkg" file="${build.dir}/${ant.project.name}-${version}.jar" />
+	</target>
+
+	<!-- instrument classes -->
+	<target name="instrument" depends="pub.jar">
+		<!--
+            Remove the coverage data file and any old instrumentation.
+        -->
+		<copy todir="${instrumented.dir}" overwrite="true">
+			<fileset dir="${classes.dir}">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+		<instrument destdir="${instrumented.dir}">
+			<fileset dir="${classes.dir}">
+				<exclude name="**/test/**" />
+				<exclude name="**/*Test*" />
+			</fileset>
+		</instrument>
+	</target>
+	<target name="pmd" depends="init">
+		<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask">
+			<classpath refid="test.classpath" />
+			<classpath refid="app.classpath" />
+			<classpath refid="JaCoCo.classpath" />
+		</taskdef>
+		<pmd shortFilenames="true" encoding="UTF-8">
+			<sourceLanguage name="java" version="1.7" />
+			<ruleset>rulesets/java/design.xml</ruleset>
+			<ruleset>rulesets/java/strings.xml</ruleset>
+			<ruleset>java-basic</ruleset>
+			<formatter type="html" toFile="${reports.dir}/pmd/pmd_report.html">
+				<param name="linkPrefix" value="http://pmd.sourceforge.net/xref/" />
+			</formatter>
+			<formatter type="xml" toFile="${reports.dir}/pmd/report_pmd.xml" />
+			<fileset dir="src/">
+				<exclude name="**/test/**" />
+				<exclude name="**/*Test*" />
+			</fileset>
+		</pmd>
+	</target>
+
+	<!-- run test and build test report-->
+	<target name="test" depends="instrument">
+		<!-- run test -->
+		<!--<coverage destfile="${JaCoCo.exec.file}" append="false" enabled="false">-->
+		<junit printsummary="yes" showoutput="yes" fork="yes" forkmode="once" dir="${basedir}" failureProperty="test.failed">
+			<sysproperty key="jacoco-agent.destfile" file="${JaCoCo.exec.file}" />
+			<jvmarg value="-XX:-UseSplitVerifier" />
+			<jvmarg value="-Djava.security.egd=file:/dev/./urandom" />
+			<classpath refid="test.classpath" />
+			<classpath refid="app.classpath" />
+			<classpath refid="run.classpath" />
+			<classpath refid="JaCoCo.classpath" />
+			<formatter type="xml" />
+			<test name="${testcase}" methods="${testmethod}" todir="${reports.dir}/junit-xml" if="testmethod" />
+			<test name="${testcase}" todir="${reports.dir}/junit-xml" if="testcase" />
+			<batchtest todir="${reports.dir}/junit-xml" unless="testcase">
+				<fileset dir="${src.dir}">
+					<include name="**/*Test.java" />
+				</fileset>
+			</batchtest>
+		</junit>
+		<!--</coverage>-->
+		<!-- junit report -->
+		<junitreport todir="${reports.dir}/junit-xml">
+			<fileset dir="${reports.dir}/junit-xml">
+				<include name="TEST-*.xml" />
+			</fileset>
+			<report format="frames" todir="${reports.dir}/junit-html" />
+		</junitreport>
+		<!-- coverage report -->
+		<report>
+			<executiondata>
+				<file file="${JaCoCo.exec.file}" />
+			</executiondata>
+			<!--  the class files and optional source files ...  -->
+			<structure name="JaCoCo Ant">
+				<classfiles>
+					<fileset dir="${classes.dir}">
+						<exclude name="**/test/**" />
+						<exclude name="**/*Test*" />
+					</fileset>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="${src.dir}" />
+				</sourcefiles>
+			</structure>
+			<!--  to produce reports in different formats.  -->
+			<html destdir="${jacoco.dir}" />
+			<csv destfile="${jacoco.dir}/report.csv" />
+			<xml destfile="${jacoco.dir}/report.xml" />
+		</report>
+	</target>
+
+	<target name="main" depends="pmd,test">
+		<echo message="****************************************" />
+		<echo message="*** This is the end of project build ***" />
+		<echo message="****************************************" />
+	</target>
+</project>
