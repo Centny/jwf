@@ -66,13 +66,13 @@ public abstract class NetwRW implements Netw {
 	@Override
 	public byte[] readm() throws IOException, ModException {
 		this.readw(this.hbuf);
-		if (!this.valid_h(this.hbuf, 0)) {
-			throw new ModException("reading invalid mod for data:"
-					+ NetwM.bstr(this.hbuf));
-		}
 		short len = 0;
 		len += this.hbuf[3] << 8;
 		len += this.hbuf[4];
+		if (!this.valid_h(this.hbuf, 0) || len < 1) {
+			throw new ModException("reading invalid mod for data:"
+					+ NetwM.bstr(this.hbuf));
+		}
 		byte[] tbuf = new byte[len];
 		this.readw(tbuf);
 		return tbuf;

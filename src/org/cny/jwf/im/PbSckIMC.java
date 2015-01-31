@@ -25,7 +25,7 @@ public class PbSckIMC extends SckIMC {
 	public <T> T B2V(Cmd bys, Class<T> cls) {
 		try {
 			if (cls == Msg.ImMsg.class) {
-				return (T) Msg.ImMsg.parseFrom(bys.bys());
+				return (T) Msg.ImMsg.parseFrom(bys.sbys());
 			} else {
 				return this.gs.fromJson(bys.toString(), cls);
 			}

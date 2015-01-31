@@ -1,6 +1,5 @@
 package org.cny.jwf.netw.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +35,12 @@ public class RC implements CmdListener {
 		this.rw = rw;
 	}
 
-	public Cmd exec(byte m, Cmd args) throws IOException, InterruptedException {
+	public <T> T exec(byte m, Cmd args, Class<T> cls) throws Exception {
+		Cmd cmd = this.exec(m, args);
+		return cmd.V(cls);
+	}
+
+	public Cmd exec(byte m, Cmd args) throws Exception {
 		CmdL cl = new CmdL();
 		synchronized (cl) {
 			this.exec(m, args, cl);
@@ -45,7 +49,7 @@ public class RC implements CmdListener {
 		return cl.m;
 	}
 
-	public void exec(byte m, Cmd args, CmdListener l) throws IOException {
+	public void exec(byte m, Cmd args, CmdListener l) throws Exception {
 		byte[] bs = new byte[] { (byte) (this.ei_cc >> 8), (byte) this.ei_cc,
 				0, m };
 		List<Cmd> ms = new ArrayList<Cmd>();
@@ -67,6 +71,14 @@ public class RC implements CmdListener {
 
 	@Override
 	public void onCmd(NetwRunnable nr, Cmd m) {
+		try {
+			this.onCmd_(nr, m);
+		} catch (Exception e) {
+			L.warn("RC error:", e);
+		}
+	}
+
+	public void onCmd_(NetwRunnable nr, Cmd m) throws Exception {
 		if (m.length() < 2) {
 			L.warn("RC receive invalid command for data less 2:" + m.toBs());
 			return;

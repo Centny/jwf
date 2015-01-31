@@ -1,7 +1,5 @@
 package org.cny.jwf.netw.impl;
 
-import java.io.IOException;
-
 import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.Converter;
 import org.cny.jwf.netw.r.Netw;
@@ -15,12 +13,16 @@ public class RCv extends RC {
 		this.c = c;
 	}
 
-	public void exec(byte m, Object args, CmdListener l) throws IOException {
+	public void exec(byte m, Object args, CmdListener l) throws Exception {
 		this.exec(m, this.c.V2B(null, args), l);
 	}
 
-	public Cmd exec(byte m, Object args) throws IOException,
-			InterruptedException {
+	public Cmd exec(byte m, Object args) throws Exception, InterruptedException {
 		return this.exec(m, this.c.V2B(null, args));
+	}
+
+	public <T> T exec(byte m, Object args, Class<T> cls) throws Exception,
+			InterruptedException {
+		return this.exec(m, this.c.V2B(null, args), cls);
 	}
 }

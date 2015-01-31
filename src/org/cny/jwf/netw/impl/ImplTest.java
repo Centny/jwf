@@ -8,6 +8,7 @@ import org.cny.jwf.netw.NetwRWv;
 import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.NetwBase;
 import org.cny.jwf.netw.r.NetwVer;
+import org.cny.jwf.netw.r.NetwRunnable.CmdListener;
 import org.junit.Test;
 
 public class ImplTest {
@@ -31,7 +32,8 @@ public class ImplTest {
 				public <T> T B2V(Cmd bys, Class<T> cls) {
 					return null;
 				}
-			}).exec((byte) 0, new NetwM(null, new byte[] { 1 }), null);
+			}).exec((byte) 0, new NetwM(null, new byte[] { 1 }),
+					(CmdListener) null);
 		} catch (Exception e) {
 
 		}

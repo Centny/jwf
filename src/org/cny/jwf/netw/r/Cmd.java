@@ -11,6 +11,8 @@ public interface Cmd extends Netw, NetwVer.NetwVable {
 
 	byte[] bys();
 
+	byte[] sbys();
+
 	Cmd slice(int off);
 
 	Cmd slice(int off, int len);

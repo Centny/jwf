@@ -26,7 +26,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	private NetwVer nv;
 
 	public static interface MsgListener {
-		public void onMsg(ImMsg m);
+		public void onMsg(Msg m);
 	}
 
 	public IMC(EvnListener e, MsgListener l) {
@@ -49,7 +49,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	@Override
 	public void onCmd(NetwRunnable nr, Cmd m) {
-		this.l.onMsg(m.V(ImMsg.class));
+		this.l.onMsg(new Msg(m.V(ImMsg.class)));
 	}
 
 	protected abstract ImMsg create(String[] r, byte t, byte[] c);
@@ -62,20 +62,28 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 		this.writem(r, (byte) t, c);
 	}
 
-	public void li(Object args, CmdListener l) throws IOException {
+	public void li(Object args, CmdListener l) throws Exception {
 		this.rc.exec(MK_NRC_LI, args, l);
 	}
 
-	public Cmd li(Object args) throws IOException, InterruptedException {
+	public Cmd li(Object args) throws Exception {
 		return this.rc.exec(MK_NRC_LI, args);
 	}
 
-	public void lo(Object args, CmdListener l) throws IOException {
+	public <T> T li(Object args, Class<T> cls) throws Exception,
+			InterruptedException {
+		return this.rc.exec(MK_NRC_LI, args, cls);
+	}
+
+	public void lo(Object args, CmdListener l) throws Exception {
 		this.rc.exec(MK_NRC_LO, args, l);
 	}
 
-	public Cmd lo(Object args) throws IOException, InterruptedException {
+	public Cmd lo(Object args) throws Exception {
 		return this.rc.exec(MK_NRC_LO, args);
 	}
 
+	public <T> T lo(Object args, Class<T> cls) throws Exception {
+		return this.rc.exec(MK_NRC_LO, args, cls);
+	}
 }

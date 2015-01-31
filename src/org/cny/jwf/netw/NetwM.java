@@ -1,6 +1,7 @@
 package org.cny.jwf.netw;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.cny.jwf.netw.r.Cmd;
@@ -36,6 +37,10 @@ public class NetwM implements Cmd {
 
 	public byte[] bys() {
 		return this.hb;
+	}
+
+	public byte[] sbys() {
+		return Arrays.copyOfRange(this.hb, this.off, this.off + this.len);
 	}
 
 	public Cmd slice(int off) {

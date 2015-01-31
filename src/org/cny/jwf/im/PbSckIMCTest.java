@@ -9,8 +9,7 @@ import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
-import org.cny.jwf.im.pb.Msg.ImMsg;
-import org.cny.jwf.netw.r.Cmd;
+import org.cny.jwf.netw.bean.Con;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.EvnListener;
@@ -24,6 +23,7 @@ public class PbSckIMCTest {
 				"LL->%-6r [%p] %c - %m%n")));
 	}
 	PbSckIMC imc;
+	int msg_c = 0;
 
 	@Test
 	public void testSIMC() throws Exception {
@@ -41,11 +41,11 @@ public class PbSckIMCTest {
 		}, new IMC.MsgListener() {
 
 			@Override
-			public void onMsg(ImMsg m) {
-				System.err.println(new String(m.getC().toStringUtf8()));
+			public void onMsg(Msg m) {
+				// System.err.println("Rec=>" + m.getC().toStringUtf8());
+				msg_c++;
 				try {
-					imc.writem(new String[] { m.getS() }, 0, ("收到-->" + m
-							.getC().toStringUtf8()).getBytes());
+					imc.writem(new String[] { m.s }, 0, "C-中文->".getBytes());
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -58,15 +58,15 @@ public class PbSckIMCTest {
 		imc.wcon();
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("token", "abc");
-		Cmd m;
-		m = imc.li(args);
-		System.err.println(m.toString());
-		imc.writem(new String[] { "U-2" }, 0, "abcc节能".getBytes("UTF-8"));
+		Con.Res res = imc.li(args, Con.Res.class);
+		imc.writem(new String[] { res.res.r }, 0, "abcc节能".getBytes("UTF-8"));
 		// Thread.sleep(300);
-		m = imc.lo(args);
-		// imc.sck.close();
+		Thread.sleep(1000);
+		imc.lo(args);
+		imc.sck.close();
 		// System.err.println(m.toString());
-		// Thread.sleep(1000);
+		Thread.sleep(1000);
 		thr.join();
+		System.err.println("Rec " + msg_c + " message");
 	}
 }

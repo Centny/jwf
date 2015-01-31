@@ -48,7 +48,7 @@
 		<mkdir dir="${jacoco.dir}" />
 	</target>
 	<target name="compile" depends="init">
-		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="true" includeantruntime="false">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" source="6" target="6" debug="true" includeantruntime="false">
 			<classpath refid="test.classpath" />
 			<classpath refid="app.classpath" />
 		</javac>
@@ -99,7 +99,9 @@
 		<instrument destdir="${instrumented.dir}">
 			<fileset dir="${classes.dir}">
 				<exclude name="**/test/**" />
+				<exclude name="**/im/pb/**" />
 				<exclude name="**/*Test*" />
+				<exclude name="**/netw/bean/**" />
 			</fileset>
 		</instrument>
 	</target>
@@ -120,7 +122,9 @@
 			<formatter type="xml" toFile="${reports.dir}/pmd/report_pmd.xml" />
 			<fileset dir="src/">
 				<exclude name="**/test/**" />
+				<exclude name="**/im/pb/**" />
 				<exclude name="**/*Test*" />
+				<exclude name="**/netw/bean/**" />
 			</fileset>
 		</pmd>
 	</target>
@@ -164,6 +168,8 @@
 				<classfiles>
 					<fileset dir="${classes.dir}">
 						<exclude name="**/test/**" />
+						<exclude name="**/im/pb/**" />
+						<exclude name="**/netw/bean/**" />
 						<exclude name="**/*Test*" />
 					</fileset>
 				</classfiles>

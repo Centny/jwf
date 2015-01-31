@@ -4,10 +4,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
 
-public final class Utils {
-	private Utils() {
-		// do nothing.
-	}
+public abstract class Utils {
 
 	public static <T> String join(T[] vals) {
 		return join(vals, ",");
@@ -26,6 +23,10 @@ public final class Utils {
 		return sb.toString();
 	}
 
+	public static String join(byte[] vals) {
+		return join(vals, ",");
+	}
+
 	public static String join(byte[] vals, String seq) {
 		if (vals == null || vals.length < 1) {
 			return "";
@@ -34,7 +35,7 @@ public final class Utils {
 		sb.append(vals[0] + "");
 		for (int i = 1; i < vals.length; i++) {
 			sb.append(seq);
-			sb.append(vals[i] + "");
+			sb.append(vals[i]);
 		}
 		return sb.toString();
 	}
@@ -70,5 +71,23 @@ public final class Utils {
 			}
 		}
 		return hs.toString().toUpperCase(Locale.ENGLISH);
+	}
+
+	public static String firstUp(String s) {
+		if (s.isEmpty()) {
+			return s;
+		} else {
+			return s.substring(0, 1).toUpperCase(Locale.ENGLISH)
+					+ s.substring(1);
+		}
+	}
+
+	public static String firstLow(String s) {
+		if (s.isEmpty()) {
+			return s;
+		} else {
+			return s.substring(0, 1).toLowerCase(Locale.ENGLISH)
+					+ s.substring(1);
+		}
 	}
 }

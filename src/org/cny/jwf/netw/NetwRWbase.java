@@ -14,6 +14,7 @@ import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwBase;
 
 public class NetwRWbase extends BufferedOutputStream implements NetwBase {
+//	private static final Logger L = LoggerFactory.getLogger(NetwRWbase.class);
 	protected int limit;
 	protected InputStream in;
 	protected OutputStream out;
@@ -73,10 +74,10 @@ public class NetwRWbase extends BufferedOutputStream implements NetwBase {
 			this.wbuf.putShort(len);
 			this.out.write(this.wbuf.array());
 			for (Cmd m : ms) {
-//				System.err.println("->" + Utils.join(m.bys(), ","));
 				this.out.write(m.bys(), m.offset(), m.length());
 			}
 			this.out.flush();
+//			L.debug("sending message len:{}", len);
 		}
 	}
 }

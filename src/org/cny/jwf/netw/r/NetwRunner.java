@@ -42,8 +42,11 @@ public abstract class NetwRunner implements NetwRunnable {
 		while (this.running) {
 			try {
 				Cmd cmd = nw.readM();
+				// L.debug("read on command:{}", cmd.toBs());
 				this.msgl.onCmd(this, cmd);
-			} catch (SocketException | EOFException e) {
+			} catch (SocketException e) {
+				break;
+			} catch (EOFException e) {
 				break;
 			} catch (ModException e) {
 				L.error(e.getMessage());
