@@ -7,6 +7,7 @@
 	<property name="JaCoCo.exec.file" location="${jacoco.dir}/jacoco.exec" />
 	<property name="pub.dir" value="${build.dir}/pub" />
 	<property name="pub.file" value="${pub.dir}/${ant.project.name}-${version}.jar" />
+	<property name="src.file" value="${pub.dir}/${ant.project.name}-${version}-src.jar" />
 
 	<path id="JaCoCo.classpath">
 		<fileset dir="lib_b/JaCoCo">
@@ -68,13 +69,20 @@
 				<exclude name="**/*Test*" />
 			</fileset>
 		</copy>
-		<jar basedir="${build.dir}/pkg" file="${pub.file}" />
+		<jar basedir="${build.dir}/pkg" destfile="${pub.file}" />
+		<jar destfile="${src.file}">
+			<fileset dir="${src.dir}">
+				<exclude name="**/test/**" />
+				<exclude name="**/*Test*" />
+			</fileset>
+		</jar>
+		<echo file="${pub.dir}/${ant.project.name}-${version}.jar.properties">src=${ant.project.name}-${version}-src.jar</echo>
 	</target>
 
 	<target name="pub.awf.jar" depends="pub.jar">
 		<copy todir="../awf/libs">
 			<fileset dir="${pub.dir}">
-				<include name="*.jar" />
+				<include name="*" />
 			</fileset>
 		</copy>
 	</target>

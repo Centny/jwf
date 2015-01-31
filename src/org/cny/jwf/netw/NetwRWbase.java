@@ -73,6 +73,7 @@ public class NetwRWbase extends BufferedOutputStream implements NetwBase {
 			this.wbuf.putShort(len);
 			this.out.write(this.wbuf.array());
 			for (Cmd m : ms) {
+//				System.err.println("->" + Utils.join(m.bys(), ","));
 				this.out.write(m.bys(), m.offset(), m.length());
 			}
 			this.out.flush();

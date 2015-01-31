@@ -2,6 +2,7 @@ package org.cny.jwf.im;
 
 import java.io.IOException;
 
+import org.cny.jwf.im.pb.Msg.ImMsg;
 import org.cny.jwf.netw.RWRunnerv;
 import org.cny.jwf.netw.impl.OBDC;
 import org.cny.jwf.netw.impl.OBDH;
@@ -19,13 +20,13 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	public static final byte MK_NRC = 4;
 	public static final byte MK_NRC_LI = 10;
 	public static final byte MK_NRC_LO = 20;
-	private final OBDH obdh;
+	protected OBDH obdh;
 	private RCv rc;
 	private final MsgListener l;
 	private NetwVer nv;
 
 	public static interface MsgListener {
-		public void onMsg(Msg m);
+		public void onMsg(ImMsg m);
 	}
 
 	public IMC(EvnListener e, MsgListener l) {
@@ -48,11 +49,13 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	@Override
 	public void onCmd(NetwRunnable nr, Cmd m) {
-		this.l.onMsg(m.V(Msg.class));
+		this.l.onMsg(m.V(ImMsg.class));
 	}
 
+	protected abstract ImMsg create(String[] r, byte t, byte[] c);
+
 	public void writem(String[] r, byte t, byte[] c) throws IOException {
-		this.nv.writev(new Msg(r, t, c));
+		this.nv.writev(this.create(r, t, c));
 	}
 
 	public void writem(String[] r, int t, byte[] c) throws IOException {

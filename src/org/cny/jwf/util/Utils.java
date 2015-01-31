@@ -26,6 +26,19 @@ public final class Utils {
 		return sb.toString();
 	}
 
+	public static String join(byte[] vals, String seq) {
+		if (vals == null || vals.length < 1) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		sb.append(vals[0] + "");
+		for (int i = 1; i < vals.length; i++) {
+			sb.append(seq);
+			sb.append(vals[i] + "");
+		}
+		return sb.toString();
+	}
+
 	public static <T> String join(Collection<T> vals) {
 		return join(vals, ",");
 	}
