@@ -20,6 +20,7 @@ public abstract class SckIMC extends IMC {
 	public void close() throws IOException {
 		if (this.sck != null) {
 			this.sck.close();
+			this.sck = null;
 		}
 	}
 

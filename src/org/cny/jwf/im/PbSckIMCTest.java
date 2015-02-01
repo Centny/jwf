@@ -45,7 +45,7 @@ public class PbSckIMCTest {
 				// System.err.println("Rec=>" + m.getC().toStringUtf8());
 				msg_c++;
 				try {
-					imc.writem(new String[] { m.s }, 0, "C-中文->".getBytes());
+					imc.sms(new String[] { m.s }, 0, "C-中文->".getBytes());
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
@@ -59,11 +59,12 @@ public class PbSckIMCTest {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("token", "abc");
 		Con.Res res = imc.li(args, Con.Res.class);
-		imc.writem(new String[] { res.res.r }, 0, "abcc节能".getBytes("UTF-8"));
+		imc.sms(new String[] { res.res.r }, 0, "abcc节能".getBytes("UTF-8"));
 		// Thread.sleep(300);
 		Thread.sleep(1000);
 		imc.lo(args);
-		imc.sck.close();
+		imc.close();
+		imc.close();
 		// System.err.println(m.toString());
 		Thread.sleep(1000);
 		thr.join();

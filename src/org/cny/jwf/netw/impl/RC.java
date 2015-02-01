@@ -21,6 +21,7 @@ public class RC implements CmdListener {
 
 	public class CmdL implements CmdListener {
 		Cmd m = null;
+		Exception e;
 
 		@Override
 		public void onCmd(NetwRunnable nr, Cmd m) {
@@ -46,7 +47,11 @@ public class RC implements CmdListener {
 			this.exec(m, args, cl);
 			cl.wait();
 		}
-		return cl.m;
+		if (cl.e == null) {
+			return cl.m;
+		} else {
+			throw cl.e;
+		}
 	}
 
 	public void exec(byte m, Cmd args, CmdListener l) throws Exception {
@@ -98,4 +103,21 @@ public class RC implements CmdListener {
 		}
 	}
 
+	public void clear(Exception e) {
+		for (CmdListener s : this.hs.values()) {
+			if (!(s instanceof CmdL)) {
+				continue;
+			}
+			CmdL l = (CmdL) s;
+			Exception te = e;
+			if (te == null) {
+				te = new Exception("RC have bean cleared");
+			}
+			synchronized (l) {
+				l.e = te;
+				l.notifyAll();
+			}
+		}
+		this.hs.clear();
+	}
 }

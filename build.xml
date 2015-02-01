@@ -189,4 +189,9 @@
 		<echo message="*** This is the end of project build ***" />
 		<echo message="****************************************" />
 	</target>
+	<target name="ALL" depends="main,pub.awf.jar">
+		<echo message="****************************************" />
+		<echo message="*** This is the end of project ALL ***" />
+		<echo message="****************************************" />
+	</target>
 </project>

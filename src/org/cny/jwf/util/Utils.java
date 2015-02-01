@@ -1,5 +1,6 @@
 package org.cny.jwf.util;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -89,5 +90,18 @@ public abstract class Utils {
 			return s.substring(0, 1).toLowerCase(Locale.ENGLISH)
 					+ s.substring(1);
 		}
+	}
+
+	public static boolean del(File f) {
+		if (f.isFile()) {
+			return f.delete();
+		}
+		File[] fs = f.listFiles();
+		if (fs != null) {
+			for (File tf : fs) {
+				del(tf);
+			}
+		}
+		return f.delete();
 	}
 }

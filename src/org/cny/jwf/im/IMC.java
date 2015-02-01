@@ -21,9 +21,9 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	public static final byte MK_NRC_LI = 10;
 	public static final byte MK_NRC_LO = 20;
 	protected OBDH obdh;
-	private RCv rc;
+	protected RCv rc;
 	private final MsgListener l;
-	private NetwVer nv;
+	protected NetwVer nv;
 
 	public static interface MsgListener {
 		public void onMsg(Msg m);
@@ -54,12 +54,12 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	protected abstract ImMsg create(String[] r, byte t, byte[] c);
 
-	public void writem(String[] r, byte t, byte[] c) throws IOException {
+	public void sms(String[] r, byte t, byte[] c) throws IOException {
 		this.nv.writev(this.create(r, t, c));
 	}
 
-	public void writem(String[] r, int t, byte[] c) throws IOException {
-		this.writem(r, (byte) t, c);
+	public void sms(String[] r, int t, byte[] c) throws IOException {
+		this.sms(r, (byte) t, c);
 	}
 
 	public void li(Object args, CmdListener l) throws Exception {
@@ -85,5 +85,11 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	public <T> T lo(Object args, Class<T> cls) throws Exception {
 		return this.rc.exec(MK_NRC_LO, args, cls);
+	}
+
+	public void rcClear(Exception e) {
+		if (this.rc != null) {
+			this.rc.clear(e);
+		}
 	}
 }

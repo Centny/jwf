@@ -35,7 +35,7 @@ public abstract class NetwRunner implements NetwRunnable {
 		this.running = false;
 	}
 
-	private void run_c() throws Exception {
+	public void run_c() throws Exception {
 		Netw nw = this.createNetw();
 		this.evnl.onCon(this, nw);
 		this.running = true;
@@ -45,8 +45,10 @@ public abstract class NetwRunner implements NetwRunnable {
 				// L.debug("read on command:{}", cmd.toBs());
 				this.msgl.onCmd(this, cmd);
 			} catch (SocketException e) {
+				this.evnl.onErr(this, e);
 				break;
 			} catch (EOFException e) {
+				this.evnl.onErr(this, e);
 				break;
 			} catch (ModException e) {
 				L.error(e.getMessage());
@@ -55,6 +57,7 @@ public abstract class NetwRunner implements NetwRunnable {
 				this.evnl.onErr(this, e);
 			}
 		}
+		this.running = false;
 	}
 
 	public void wcon() throws InterruptedException {
