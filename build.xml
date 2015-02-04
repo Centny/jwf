@@ -74,6 +74,7 @@
 			<fileset dir="${src.dir}">
 				<exclude name="**/test/**" />
 				<exclude name="**/*Test*" />
+				<exclude name="*.properties" />
 			</fileset>
 		</jar>
 		<echo file="${pub.dir}/${ant.project.name}-${version}.jar.properties">src=${ant.project.name}-${version}-src.jar</echo>

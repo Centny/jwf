@@ -1,9 +1,12 @@
 package org.cny.jwf.util;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 public abstract class Utils {
 
@@ -18,6 +21,9 @@ public abstract class Utils {
 		StringBuffer sb = new StringBuffer();
 		sb.append(vals[0].toString());
 		for (int i = 1; i < vals.length; i++) {
+			if (vals[i] == null) {
+				continue;
+			}
 			sb.append(seq);
 			sb.append(vals[i].toString());
 		}
@@ -103,5 +109,62 @@ public abstract class Utils {
 			}
 		}
 		return f.delete();
+	}
+
+	public static String stack(StackTraceElement[] es) {
+		StringBuffer sb = new StringBuffer();
+		for (StackTraceElement e : es) {
+			sb.append(e.getFileName());
+			sb.append(',');
+			sb.append(e.getClassName());
+			sb.append(',');
+			sb.append(e.getMethodName());
+			sb.append(',');
+			sb.append(e.getLineNumber());
+			sb.append('\n');
+		}
+		return sb.toString();
+	}
+
+	public static Map<String, String> oinfo(Object o) {
+		Map<String, String> kvs = new HashMap<String, String>();
+		for (Method m : o.getClass().getMethods()) {
+			if (m.getParameterTypes().length > 0) {
+				continue;
+			}
+			if (m.getReturnType() == null) {
+				continue;
+			}
+			String mn = m.getName();
+			if (mn.length() < 4) {
+				continue;
+			}
+			if (!"get".equals(mn.substring(0, 3))) {
+				continue;
+			}
+			String tn = Utils.firstLow(mn.substring(3));
+			Object val;
+			try {
+				val = m.invoke(o);
+			} catch (Throwable e) {
+				continue;
+			}
+			if (val == null) {
+				continue;
+			}
+			Class<?> tcls = val.getClass();
+			if (tcls == String[].class) {
+				kvs.put(tn, join((String[]) val));
+			} else {
+				kvs.put(tn, val.toString());
+			}
+		}
+		return kvs;
+	}
+
+	public static Map<String, Object> Kv(String key, Object v) {
+		Map<String, Object> kv = new HashMap<String, Object>();
+		kv.put(key, v);
+		return kv;
 	}
 }

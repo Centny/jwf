@@ -5,23 +5,21 @@ import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.ConsoleAppender;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PatternLayout;
 import org.cny.jwf.netw.bean.Con;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.EvnListener;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PbSckIMCTest {
-	static {
-		Logger rootLogger = Logger.getRootLogger();
-		rootLogger.setLevel(Level.DEBUG);
-		rootLogger.addAppender(new ConsoleAppender(new PatternLayout(
-				"LL->%-6r [%p] %c - %m%n")));
-	}
+	// static {
+	// Logger rootLogger = Logger.getRootLogger();
+	// rootLogger.setLevel(Level.DEBUG);
+	// rootLogger.addAppender(new ConsoleAppender(new PatternLayout(
+	// "LL->%-6r [%p] %c - %m%n")));
+	// }
 	PbSckIMC imc;
 	int msg_c = 0;
 
@@ -69,5 +67,14 @@ public class PbSckIMCTest {
 		Thread.sleep(1000);
 		thr.join();
 		System.err.println("Rec " + msg_c + " message");
+
+	}
+
+	@Test
+	public void testLog() {
+		Logger l = LoggerFactory.getLogger(this.getClass());
+		l.debug("DEBUG----->");
+		l.info("DEBUG----->");
+		l.error("DEBUG----->");
 	}
 }

@@ -31,4 +31,9 @@ public class UtilsTest {
 		Assert.assertEquals(true, Utils.del(f));
 		Assert.assertEquals(true, Utils.del(new File("/sfksdfjksd/dsfdds")));
 	}
+
+	@Test
+	public void testOinfo() throws Exception {
+		System.err.println(Utils.oinfo(new Object()));
+	}
 }
