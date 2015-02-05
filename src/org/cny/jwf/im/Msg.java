@@ -11,6 +11,11 @@ import org.cny.jwf.util.Utils;
 public class Msg implements Serializable {
 
 	private static final long serialVersionUID = 26764532216064436L;
+
+	public static final int MS_REV = 0;
+	public static final int MS_MARK = 1;
+	public static final int MS_READED = 1 << 1;
+	public static final int MS_DEL = 1 << 2;
 	public String i;
 	public String s;
 	public String[] r;
@@ -18,6 +23,7 @@ public class Msg implements Serializable {
 	public String d;
 	public byte[] c;
 	public long time;
+	public int status = MS_REV;
 
 	public Msg() {
 	}
@@ -75,6 +81,6 @@ public class Msg implements Serializable {
 
 	public Object[] toObjects() {
 		return new Object[] { this.i, this.s, Utils.join(this.r), d, t,
-				new String(this.c), this.time };
+				new String(this.c), this.time, this.status };
 	}
 }

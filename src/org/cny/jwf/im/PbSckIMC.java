@@ -7,13 +7,15 @@ import org.cny.jwf.im.pb.Msg;
 import org.cny.jwf.im.pb.Msg.ImMsg;
 import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.NetwVer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 import com.google.protobuf.ByteString;
-import com.google.protobuf.InvalidProtocolBufferException;
 
 public class PbSckIMC extends SckIMC {
 
+	private static Logger L = LoggerFactory.getLogger(PbSckIMC.class);
 	protected final Gson gs = new Gson();
 
 	public PbSckIMC(EvnListener e, MsgListener l, String host, int port) {
@@ -27,9 +29,11 @@ public class PbSckIMC extends SckIMC {
 			if (cls == Msg.ImMsg.class) {
 				return (T) Msg.ImMsg.parseFrom(bys.sbys());
 			} else {
-				return this.gs.fromJson(bys.toString(), cls);
+				// Gson gs = new Gson();
+				return this.gs.fromJson(bys.toString().trim(), cls);
 			}
-		} catch (InvalidProtocolBufferException e) {
+		} catch (Exception e) {
+			L.warn("B2V Data({}) to V err({})", bys.toString(), e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -41,6 +45,7 @@ public class PbSckIMC extends SckIMC {
 			Msg.ImMsg msg = (ImMsg) o;
 			bys = msg.toByteArray();
 		} else {
+			// Gson gs = new Gson();
 			bys = this.gs.toJson(o).getBytes();
 		}
 		return this.netw().newM(bys, 0, bys.length);

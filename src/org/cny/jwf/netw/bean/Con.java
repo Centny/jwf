@@ -28,7 +28,7 @@ public class Con {
 	}
 
 	public static class Res {
-		public int code;
+		public int code = -1;
 		public Con res = new Con();
 		public String err = null;
 
