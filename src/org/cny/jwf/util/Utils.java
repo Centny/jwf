@@ -8,12 +8,34 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-public abstract class Utils {
+/**
+ * normal util class.
+ * 
+ * @author cny
+ *
+ */
+public class Utils {
 
+	/**
+	 * join Object[] to string by ,
+	 * 
+	 * @param vals
+	 *            target values.
+	 * @return joined string.
+	 */
 	public static <T> String join(T[] vals) {
 		return join(vals, ",");
 	}
 
+	/**
+	 * join Object[] to string by special separate.
+	 * 
+	 * @param vals
+	 *            target values.
+	 * @param seq
+	 *            special separate.
+	 * @return joined string.
+	 */
 	public static <T> String join(T[] vals, String seq) {
 		if (vals == null || vals.length < 1) {
 			return "";
@@ -30,10 +52,26 @@ public abstract class Utils {
 		return sb.toString();
 	}
 
+	/**
+	 * join the byte[] to string by ,
+	 * 
+	 * @param vals
+	 *            target bytes.
+	 * @return joined string.
+	 */
 	public static String join(byte[] vals) {
 		return join(vals, ",");
 	}
 
+	/**
+	 * join byte[] to string by special separate.
+	 * 
+	 * @param vals
+	 *            target values.
+	 * @param seq
+	 *            special separate.
+	 * @return joined string.
+	 */
 	public static String join(byte[] vals, String seq) {
 		if (vals == null || vals.length < 1) {
 			return "";
@@ -47,10 +85,26 @@ public abstract class Utils {
 		return sb.toString();
 	}
 
+	/**
+	 * join collection to string by,.
+	 * 
+	 * @param vals
+	 *            target values.
+	 * @return joined string.
+	 */
 	public static <T> String join(Collection<T> vals) {
 		return join(vals, ",");
 	}
 
+	/**
+	 * join collection to string by special separate.
+	 * 
+	 * @param vals
+	 *            target values.
+	 * @param seq
+	 *            special separate.
+	 * @return joined string.
+	 */
 	public static <T> String join(Collection<T> vals, String seq) {
 		if (vals == null || vals.isEmpty()) {
 			return "";
@@ -65,6 +119,13 @@ public abstract class Utils {
 		return sb.toString();
 	}
 
+	/**
+	 * convert byte[] to hex.
+	 * 
+	 * @param b
+	 *            byte[]
+	 * @return hex string.
+	 */
 	public static String byte2hex(byte[] b) {
 		StringBuffer hs = new StringBuffer(b.length);
 		String stmp = "";
@@ -80,6 +141,13 @@ public abstract class Utils {
 		return hs.toString().toUpperCase(Locale.ENGLISH);
 	}
 
+	/**
+	 * convert first char to upper case.
+	 * 
+	 * @param s
+	 *            target string.
+	 * @return new string.
+	 */
 	public static String firstUp(String s) {
 		if (s.isEmpty()) {
 			return s;
@@ -89,6 +157,13 @@ public abstract class Utils {
 		}
 	}
 
+	/**
+	 * convert first char to lower case.
+	 * 
+	 * @param s
+	 *            target string.
+	 * @return new string.
+	 */
 	public static String firstLow(String s) {
 		if (s.isEmpty()) {
 			return s;
@@ -98,6 +173,13 @@ public abstract class Utils {
 		}
 	}
 
+	/**
+	 * delete file or directory by deleting all child file.
+	 * 
+	 * @param f
+	 *            target file,
+	 * @return
+	 */
 	public static boolean del(File f) {
 		if (f.isFile()) {
 			return f.delete();
@@ -111,6 +193,13 @@ public abstract class Utils {
 		return f.delete();
 	}
 
+	/**
+	 * put all stack info to string.
+	 * 
+	 * @param es
+	 *            target stacks.
+	 * @return join string.
+	 */
 	public static String stack(StackTraceElement[] es) {
 		StringBuffer sb = new StringBuffer();
 		for (StackTraceElement e : es) {
@@ -126,13 +215,20 @@ public abstract class Utils {
 		return sb.toString();
 	}
 
+	/**
+	 * get object info by call it all get method,and to string.
+	 * 
+	 * @param o
+	 *            target object.
+	 * @return key-value by filed name and file value.
+	 */
 	public static Map<String, String> oinfo(Object o) {
 		Map<String, String> kvs = new HashMap<String, String>();
 		for (Method m : o.getClass().getMethods()) {
 			if (m.getParameterTypes().length > 0) {
 				continue;
 			}
-			if (m.getReturnType() == null) {
+			if (m.getReturnType() == void.class) {
 				continue;
 			}
 			String mn = m.getName();
@@ -162,9 +258,34 @@ public abstract class Utils {
 		return kvs;
 	}
 
+	/**
+	 * new map by one key-value.
+	 * 
+	 * @param key
+	 *            target key.
+	 * @param v
+	 *            target value.
+	 * @return
+	 */
 	public static Map<String, Object> Kv(String key, Object v) {
 		Map<String, Object> kv = new HashMap<String, Object>();
 		kv.put(key, v);
 		return kv;
+	}
+
+	/**
+	 * default constructor.
+	 */
+	private Utils() {
+		// do nothing.
+	}
+
+	/**
+	 * only for test coverage.
+	 * 
+	 * @return
+	 */
+	public static Utils newu() {
+		return new Utils();
 	}
 }
