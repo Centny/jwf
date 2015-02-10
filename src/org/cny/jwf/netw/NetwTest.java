@@ -2,6 +2,9 @@ package org.cny.jwf.netw;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.util.ArrayList;
@@ -167,4 +170,97 @@ public class NetwTest {
 		}.createNetw();
 	}
 
+	@Test
+	public void testErr() throws IOException {
+		try {
+			new NetwRWbase(new ByteArrayOutputStream(), 10240,
+					new ByteArrayInputStream(new byte[] {}) {
+
+						@Override
+						public synchronized int read(byte[] b, int off, int len) {
+							return -1;
+						}
+
+					}, 1024).readw(new byte[100], 0, 100);
+		} catch (Exception e) {
+
+		}
+		new NetwMv(null, new byte[1]);
+
+		NetwRW rw;
+		rw = new NetwRW(null) {
+
+			@Override
+			public Cmd newM(byte[] m, int off, int len) {
+				return null;
+			}
+
+			@Override
+			public int readw(byte[] buf) throws IOException {
+				return buf.length;
+			}
+		};
+		try {
+			rw.readm();
+		} catch (Exception e) {
+
+		}
+		rw = new NetwRW(null) {
+
+			@Override
+			public Cmd newM(byte[] m, int off, int len) {
+				return null;
+			}
+
+			@Override
+			public int readw(byte[] buf) throws IOException {
+				buf[0] = '^';
+				buf[1] = '~';
+				buf[2] = '^';
+				buf[3] = 0;
+				buf[4] = 0;
+				return buf.length;
+			}
+		};
+		try {
+			rw.readm();
+		} catch (Exception e) {
+
+		}
+	}
+
+	@Test
+	public void testErr2() {
+		NetwM.bstr(new byte[] {}, 0, 1);
+		NetwM.bstr(new byte[] { 1 }, 11, 1);
+		NetwM.bstr(new byte[] { 1 }, -1, 1);
+		NetwM.bstr(new byte[] { 1 }, 0, -1);
+		NetwM nm = new NetwM(null, new byte[10]);
+		nm.toBs();
+		try {
+			nm.reset(-1, 0);
+		} catch (Exception e) {
+
+		}
+		try {
+			nm.reset(101, 0);
+		} catch (Exception e) {
+
+		}
+		try {
+			nm.reset(0, -1);
+		} catch (Exception e) {
+
+		}
+		try {
+			nm.reset(0, 100);
+		} catch (Exception e) {
+
+		}
+		try {
+			nm.reset(8, 8);
+		} catch (Exception e) {
+
+		}
+	}
 }

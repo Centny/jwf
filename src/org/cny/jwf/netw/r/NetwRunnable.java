@@ -2,6 +2,8 @@ package org.cny.jwf.netw.r;
 
 public interface NetwRunnable extends Runnable {
 	public static interface EvnListener {
+		void begCon(NetwRunnable nr) throws Exception;
+
 		void onCon(NetwRunnable nr, Netw nw) throws Exception;
 
 		void onErr(NetwRunnable nr, Throwable e);

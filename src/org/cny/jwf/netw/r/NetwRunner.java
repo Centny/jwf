@@ -36,6 +36,7 @@ public abstract class NetwRunner implements NetwRunnable {
 	}
 
 	public void run_c() throws Exception {
+		this.evnl.begCon(this);
 		Netw nw = this.createNetw();
 		this.evnl.onCon(this, nw);
 		this.running = true;
@@ -46,14 +47,13 @@ public abstract class NetwRunner implements NetwRunnable {
 				this.msgl.onCmd(this, cmd);
 			} catch (SocketException e) {
 				this.evnl.onErr(this, e);
-				break;
+				this.running = false;
 			} catch (EOFException e) {
 				this.evnl.onErr(this, e);
-				break;
+				this.running = false;
 			} catch (ModException e) {
 				L.error(e.getMessage());
-				continue;
-			} catch (Throwable e) {
+			} catch (Exception e) {
 				this.evnl.onErr(this, e);
 			}
 		}

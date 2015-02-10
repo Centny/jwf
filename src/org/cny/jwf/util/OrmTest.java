@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.cny.jwf.util.Orm.Name;
+import org.cny.jwf.util.Orm.OrmBuilder;
 import org.junit.Test;
 
 public class OrmTest {
@@ -92,5 +93,42 @@ public class OrmTest {
 		System.out.println(Orm.builds(cvals, Val.class));
 		new Orm() {
 		};
+	}
+
+	@Test
+	public void testErr() {
+		try {
+			Orm.build(new OrmBuilder() {
+
+				@Override
+				public boolean next() {
+					throw new RuntimeException();
+				}
+
+				@Override
+				public <T> T get(String name, Name n, Class<T> cls) {
+					return null;
+				}
+			}, Object.class);
+		} catch (Exception e) {
+
+		}
+		Orm.build(new OrmBuilder() {
+
+			@Override
+			public boolean next() {
+				return false;
+			}
+
+			@Override
+			public <T> T get(String name, Name n, Class<T> cls) {
+				return null;
+			}
+		}, Object.class);
+		try {
+			Orm.builds((OrmBuilder) null, Object.class);
+		} catch (Exception e) {
+
+		}
 	}
 }

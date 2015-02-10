@@ -1,8 +1,16 @@
 package org.cny.jwf.util;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
@@ -287,5 +295,135 @@ public class Utils {
 	 */
 	public static Utils newu() {
 		return new Utils();
+	}
+
+	/**
+	 * time message.
+	 * 
+	 * @param t
+	 *            target timestamp.
+	 * @return message.
+	 */
+	public static String tmsg(long t, boolean show) {
+		return tmsg_(t, 0, show);
+	}
+
+	public static String tmsg_(long dt, long nt, boolean show) {
+		Calendar tn = Calendar.getInstance();
+		tn.setTime(new Date(dt));
+		Calendar now = Calendar.getInstance();
+		if (nt < 1) {
+			now.setTime(new Date());
+		} else {
+			now.setTime(new Date(nt));
+		}
+		if (tn.get(Calendar.YEAR) != now.get(Calendar.YEAR)) {
+			return new SimpleDateFormat("yyyy/MM/dd", Locale.ENGLISH).format(tn
+					.getTime());
+		}
+		int td = tn.get(Calendar.DAY_OF_YEAR);
+		int nd = now.get(Calendar.DAY_OF_YEAR);
+		int dif = nd - td;
+		switch (dif) {
+		case 0:
+			return new SimpleDateFormat("HH:mm", Locale.ENGLISH).format(tn
+					.getTime());
+		case 1:
+			if (show) {
+				return "昨天 "
+						+ new SimpleDateFormat("HH:mm", Locale.ENGLISH)
+								.format(tn.getTime());
+			} else {
+				return "昨天";
+			}
+		case 2:
+			if (show) {
+				return "前天 "
+						+ new SimpleDateFormat("HH:mm", Locale.ENGLISH)
+								.format(tn.getTime());
+			} else {
+				return "前天";
+			}
+		case 3:
+		case 4:
+		case 5:
+		case 6:
+			String hm = "";
+			if (show) {
+				hm = " "
+						+ new SimpleDateFormat("HH:mm", Locale.ENGLISH)
+								.format(tn.getTime());
+			}
+			switch (tn.get(Calendar.DAY_OF_WEEK)) {
+			case 1:
+				return "星期天" + hm;
+			case 2:
+				return "星期一" + hm;
+			case 3:
+				return "星期二" + hm;
+			case 4:
+				return "星期三" + hm;
+			case 5:
+				return "星期四" + hm;
+			case 6:
+				return "星期五" + hm;
+			default:
+				return "星期六" + hm;
+			}
+		default:
+			if (show) {
+				return new SimpleDateFormat("MM/dd HH:mm", Locale.ENGLISH)
+						.format(tn.getTime());
+			} else {
+				return new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(tn
+						.getTime());
+			}
+		}
+
+	}
+
+	// public void copy(File dst, File src) throws IOException {
+	// FileInputStream fi = null;
+	// FileOutputStream fo = null;
+	// FileChannel in = null;
+	// FileChannel out = null;
+	// try {
+	// fi = new FileInputStream(src);
+	// fo = new FileOutputStream(dst);
+	// in = fi.getChannel();
+	// out = fo.getChannel();
+	// in.transferTo(0, in.size(), out);
+	// } catch (IOException e) {
+	// throw e;
+	// } finally {
+	// try {
+	// fi.close();
+	// } catch (Exception e) {
+	// }
+	// try {
+	// in.close();
+	// } catch (Exception e) {
+	// }
+	// try {
+	// fo.close();
+	// } catch (Exception e) {
+	// }
+	// try {
+	// out.close();
+	// } catch (Exception e) {
+	// }
+	// }
+	// }
+
+	public static void copy(OutputStream dst, InputStream src)
+			throws IOException {
+		BufferedOutputStream tdst = new BufferedOutputStream(dst);
+		BufferedInputStream tsrc = new BufferedInputStream(src);
+		byte[] buf = new byte[2048];
+		int rlen = 0;
+		while ((rlen = tsrc.read(buf)) != -1) {
+			tdst.write(buf, 0, rlen);
+		}
+		tdst.flush();
 	}
 }

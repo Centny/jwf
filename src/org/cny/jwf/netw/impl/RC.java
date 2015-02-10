@@ -15,20 +15,28 @@ import org.slf4j.LoggerFactory;
 public class RC implements CmdListener {
 
 	private static final Logger L = LoggerFactory.getLogger(RC.class);
-	private final Map<Short, CmdListener> hs = new HashMap<Short, CmdListener>();
-	private final Netw rw;
-	private short ei_cc = 1;
+	protected final Map<Short, CmdListener> hs = new HashMap<Short, CmdListener>();
+	protected final Netw rw;
+	protected short ei_cc = 1;
 
-	public class CmdL implements CmdListener {
+	public static class CmdL implements CmdListener {
 		Cmd m = null;
 		Exception e;
 
 		@Override
 		public void onCmd(NetwRunnable nr, Cmd m) {
 			synchronized (this) {
-				this.m = m;
+				this.setM(m);
 				this.notifyAll();
 			}
+		}
+
+		public void setM(Cmd m) {
+			this.m = m;
+		}
+
+		public void setE(Exception e) {
+			this.e = e;
 		}
 	}
 
@@ -54,6 +62,10 @@ public class RC implements CmdListener {
 		}
 	}
 
+	protected short next_ei() {
+		return this.ei_cc++;
+	}
+
 	public void exec(byte m, Cmd args, CmdListener l) throws Exception {
 		byte[] bs = new byte[] { (byte) (this.ei_cc >> 8), (byte) this.ei_cc,
 				0, m };
@@ -62,7 +74,7 @@ public class RC implements CmdListener {
 		ms.add(args);
 		short tei = 0;
 		synchronized (this) {
-			tei = this.ei_cc++;
+			tei = this.next_ei();
 		}
 		try {
 			this.hs.put(tei, l);
@@ -114,7 +126,7 @@ public class RC implements CmdListener {
 				te = new Exception("RC have bean cleared");
 			}
 			synchronized (l) {
-				l.e = te;
+				l.setE(te);
 				l.notifyAll();
 			}
 		}

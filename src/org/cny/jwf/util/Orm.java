@@ -81,9 +81,29 @@ public abstract class Orm {
 	 * @return initialed object.
 	 * @throws Exception
 	 */
-	public static <T> T build(Map<String, ?> vals, Class<T> cls)
-			throws Exception {
+	public static <T> T build(Map<String, ?> vals, Class<T> cls) {
 		return build(new MapBuilder(vals), cls);
+	}
+
+	/**
+	 * build one object by OrmBuilder and class.
+	 * 
+	 * @param ob
+	 *            target filed value by Builder.
+	 * @param cls
+	 *            target class.
+	 * @return initialed object.
+	 */
+	public static <T> T build(OrmBuilder ob, Class<T> cls) {
+		try {
+			if (ob.next()) {
+				return build_(ob, cls);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -97,7 +117,7 @@ public abstract class Orm {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T> T build(OrmBuilder ob, Class<T> cls) throws Exception {
+	public static <T> T build_(OrmBuilder ob, Class<T> cls) throws Exception {
 		Method[] ms = cls.getMethods();
 		Object obj = cls.newInstance();
 		for (Method m : ms) {
@@ -143,8 +163,7 @@ public abstract class Orm {
 	 * @return initialed object.
 	 * @throws Exception
 	 */
-	public static <T> List<T> builds(Map<String, ?> vals, Class<T> cls)
-			throws Exception {
+	public static <T> List<T> builds(Map<String, ?> vals, Class<T> cls) {
 		return builds(new MapBuilder(vals), cls);
 	}
 
@@ -159,7 +178,7 @@ public abstract class Orm {
 	 * @throws Exception
 	 */
 	public static <T> List<T> builds(Collection<Map<String, ?>> cvals,
-			Class<T> cls) throws Exception {
+			Class<T> cls) {
 		return builds(new CollectMapBuilder(cvals), cls);
 	}
 
@@ -173,11 +192,29 @@ public abstract class Orm {
 	 * @return the list of initialed object.
 	 * @throws Exception
 	 */
-	public static <T> List<T> builds(OrmBuilder ob, Class<T> cls)
+	public static <T> List<T> builds(OrmBuilder ob, Class<T> cls) {
+		try {
+			return builds_(ob, cls);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * build the list object by OrmBuilder and class.
+	 * 
+	 * @param ob
+	 *            the builder.
+	 * @param cls
+	 *            target class.
+	 * @return the list of initialed object.
+	 * @throws Exception
+	 */
+	public static <T> List<T> builds_(OrmBuilder ob, Class<T> cls)
 			throws Exception {
 		List<T> objs = new ArrayList<T>();
 		while (ob.next()) {
-			T obj = build(ob, cls);
+			T obj = build_(ob, cls);
 			objs.add(obj);
 		}
 		return objs;

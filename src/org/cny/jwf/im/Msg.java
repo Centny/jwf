@@ -2,6 +2,7 @@ package org.cny.jwf.im;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.cny.jwf.im.pb.Msg.ImMsg;
@@ -11,11 +12,14 @@ import org.cny.jwf.util.Utils;
 public class Msg implements Serializable {
 
 	private static final long serialVersionUID = 26764532216064436L;
-
+	private static int IDC = 0;
 	public static final int MS_REV = 0;
 	public static final int MS_MARK = 1;
 	public static final int MS_READED = 1 << 1;
 	public static final int MS_DEL = 1 << 2;
+	public static final int MS_SENDING = 1 << 3;
+	public static final int MS_SENDED = 1 << 4;
+	public static final int MS_SEND_ERR = 1 << 5;
 	public String i;
 	public String s;
 	public String[] r;
@@ -26,6 +30,18 @@ public class Msg implements Serializable {
 	public int status = MS_REV;
 
 	public Msg() {
+		// do nothing.
+	}
+
+	public Msg(String s, String r, int t, byte[] c, int status) {
+		super();
+		this.i = "L" + IDC++;
+		this.s = s;
+		this.r = new String[] { r };
+		this.t = t;
+		this.c = c;
+		this.time = new Date().getTime();
+		this.status = status;
 	}
 
 	public Msg(ImMsg im) {
@@ -80,7 +96,9 @@ public class Msg implements Serializable {
 	}
 
 	public Object[] toObjects() {
-		return new Object[] { this.i, this.s, Utils.join(this.r), d, t,
-				new String(this.c), this.time, this.status };
+		return new Object[] { this.i, this.s,
+				this.r == null ? null : Utils.join(this.r), d, t,
+				this.c == null ? null : new String(this.c), this.time,
+				this.status };
 	}
 }

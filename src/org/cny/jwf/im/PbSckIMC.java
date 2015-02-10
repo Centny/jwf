@@ -2,6 +2,7 @@ package org.cny.jwf.im;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.cny.jwf.im.pb.Msg;
 import org.cny.jwf.im.pb.Msg.ImMsg;
@@ -57,7 +58,8 @@ public class PbSckIMC extends SckIMC {
 			throw new InvalidParameterException("the r/c is null or empty");
 		}
 		Msg.ImMsg.Builder imb = Msg.ImMsg.newBuilder();
-		imb.addAllR(Arrays.asList(r));
+		List<String> rr = Arrays.asList(r);
+		imb.addAllR(rr);
 		imb.setT(t);
 		imb.setC(ByteString.copyFrom(c));
 		return imb.build();

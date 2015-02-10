@@ -52,7 +52,7 @@ public abstract class NetwRW implements Netw {
 		this.writeM(ms);
 	}
 
-	private boolean valid_h(byte[] bys, int offs) {
+	public static boolean valid_h(byte[] bys, int offs) {
 		for (int i = 0; i < H_MOD.length; i++) {
 			if (H_MOD[i] == bys[i]) {
 				continue;
@@ -69,7 +69,7 @@ public abstract class NetwRW implements Netw {
 		short len = 0;
 		len += this.hbuf[3] << 8;
 		len += this.hbuf[4];
-		if (!this.valid_h(this.hbuf, 0) || len < 1) {
+		if (!valid_h(this.hbuf, 0) || len < 1) {
 			throw new ModException("reading invalid mod for data:"
 					+ NetwM.bstr(this.hbuf));
 		}

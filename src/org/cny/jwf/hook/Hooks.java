@@ -11,9 +11,11 @@ public class Hooks {
 	protected Map<Object, List<Hookable>> hks = new HashMap<Object, List<Hookable>>();
 
 	public static Hooks instance() {
+		// synchronized (Hooks.class) {
 		if (HK == null) {
 			HK = new Hooks();
 		}
+		// }
 		return HK;
 	}
 
@@ -34,7 +36,7 @@ public class Hooks {
 	}
 
 	public Hooks() {
-
+		// do nothing.
 	}
 
 	public Hooks addv(Object key, Hookable h) {

@@ -101,6 +101,7 @@
 			<fileset dir="${classes.dir}">
 				<exclude name="**/test/**" />
 				<exclude name="**/im/pb/**" />
+				<exclude name="**/im/Msg*" />
 				<exclude name="**/*Test*" />
 				<exclude name="**/netw/bean/**" />
 			</fileset>
@@ -170,6 +171,7 @@
 					<fileset dir="${classes.dir}">
 						<exclude name="**/test/**" />
 						<exclude name="**/im/pb/**" />
+						<exclude name="**/im/Msg*" />
 						<exclude name="**/netw/bean/**" />
 						<exclude name="**/*Test*" />
 					</fileset>
