@@ -12,7 +12,7 @@ import org.cny.jwf.util.Utils;
 public class Msg implements Serializable {
 
 	private static final long serialVersionUID = 26764532216064436L;
-	private static int IDC = 0;
+//	private static int IDC = 0;
 	public static final int MS_REV = 0;
 	public static final int MS_MARK = 1;
 	public static final int MS_READED = 1 << 1;
@@ -35,7 +35,7 @@ public class Msg implements Serializable {
 
 	public Msg(String s, String r, int t, byte[] c, int status) {
 		super();
-		this.i = "L" + IDC++;
+//		this.i = "L" + IDC++;
 		this.s = s;
 		this.r = new String[] { r };
 		this.t = t;
