@@ -134,4 +134,46 @@ public class PbSckIMCTest {
 		l.info("DEBUG----->");
 		l.error("DEBUG----->");
 	}
+
+	@Test
+	public void testRobot() throws Exception {
+		imc = new PbSckIMC(new EvnListener() {
+
+			@Override
+			public void onErr(NetwRunnable nr, Throwable e) {
+				e.printStackTrace();
+			}
+
+			@Override
+			public void onCon(NetwRunnable nr, Netw nw) {
+
+			}
+
+			@Override
+			public void begCon(NetwRunnable nr) throws Exception {
+
+			}
+
+		}, new IMC.MsgListener() {
+
+			@Override
+			public void onMsg(Msg m) {
+				System.err.println("Rec=>" + m.toString());
+			}
+		}, "127.0.0.1", 9891);
+		Thread thr = new Thread(imc);
+		thr.start();
+		imc.wcon();
+		Map<String, Object> args = new HashMap<String, Object>();
+		args.put("token", "abc");
+		args.put("ctype", "20");
+
+		Con.Res res = imc.li(args, Con.Res.class);
+		Assert.assertEquals(0, res.code);
+		for (int i = 0; i < 100; i++) {
+			imc.sms(new String[] { "S-Robot" }, (byte) 0, "abbb".getBytes());
+		}
+		imc.close();
+		thr.join();
+	}
 }
