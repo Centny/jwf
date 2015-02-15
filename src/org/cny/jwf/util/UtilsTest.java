@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,6 +15,14 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.reflect.TypeToken;
 
 public class UtilsTest {
 
@@ -131,5 +140,82 @@ public class UtilsTest {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream(1024);
 		ByteArrayInputStream bis = new ByteArrayInputStream(new byte[1024]);
 		Utils.copy(bos, bis);
+	}
+
+	public static class ObjectDeserializer<T> implements JsonDeserializer<T> {
+		protected Gson gs = new Gson();
+		protected JsonElement je;
+
+		@Override
+		public T deserialize(JsonElement je, Type type,
+				JsonDeserializationContext ctx) throws JsonParseException {
+			this.je = je;
+			if (je.isJsonObject() || je.isJsonArray()) {
+				return this.gs.fromJson(je, type);
+			} else {
+				return null;
+			}
+		}
+	}
+
+	public static class Abc {
+		public String key;
+		public String val;
+		public int type;
+	}
+
+	public class CRes<T> {
+		/**
+		 * the response code.
+		 */
+		public int code;
+		/**
+		 * the data object.
+		 */
+		public T data;
+		/**
+		 * the error message.
+		 */
+		public String msg;
+		/**
+		 * the debug message.
+		 */
+		public String dmsg;
+	}
+
+	public String tdata4 = "{\"code\":11}";
+	public String tdata5 = "{\"code\":11,\"data\":\"sdfs\"}";
+	public String tdata6 = "{\"code\":11,\"data\":111}";
+	public String tdata7 = "{\"code\":11,\"data\":{\"key\":\"ss\"}}";
+
+	public class Azz<T> {
+
+		public ObjectDeserializer<T> xx() {
+			return new ObjectDeserializer<T>();
+		}
+	}
+
+	public class Axx extends Azz<Abc> {
+
+		public TypeToken<CRes<Abc>> cc() {
+			return new TypeToken<CRes<Abc>>() {
+			};
+		}
+	}
+
+	@Test
+	public void testGSon() {
+		GsonBuilder gb = new GsonBuilder();
+		Axx axx = new Axx();
+		gb.registerTypeAdapter(Abc.class, axx.xx());
+		Gson gs = gb.create();
+
+		// TypeToken<CRes<Abc>> tt = new TypeToken<CRes<Abc>>() {
+		// };
+		CRes<Abc> res;
+		res = gs.fromJson(tdata6, axx.cc().getType());
+		Assert.assertNull(res.data);
+		res = gs.fromJson(tdata7, axx.cc().getType());
+		Assert.assertEquals("ss", res.data.key);
 	}
 }

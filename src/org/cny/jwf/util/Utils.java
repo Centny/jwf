@@ -128,6 +128,33 @@ public class Utils {
 	}
 
 	/**
+	 * join collection to string by special separate.
+	 * 
+	 * @param vals
+	 *            target values.
+	 * @param seq
+	 *            special separate.
+	 * @return joined string.
+	 */
+	public static String joinSQL(Collection<String> vals) {
+		if (vals == null || vals.isEmpty()) {
+			return "";
+		}
+		StringBuffer sb = new StringBuffer();
+		Iterator<String> it = vals.iterator();
+		sb.append('\'');
+		sb.append(it.next().toString());
+		sb.append('\'');
+		while (it.hasNext()) {
+			sb.append(',');
+			sb.append('\'');
+			sb.append(it.next().toString());
+			sb.append('\'');
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * convert byte[] to hex.
 	 * 
 	 * @param b

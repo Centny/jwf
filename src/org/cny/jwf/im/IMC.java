@@ -1,6 +1,7 @@
 package org.cny.jwf.im;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import org.cny.jwf.im.pb.Msg.ImMsg;
 import org.cny.jwf.netw.RWRunnerv;
@@ -8,6 +9,7 @@ import org.cny.jwf.netw.impl.OBDC;
 import org.cny.jwf.netw.impl.OBDH;
 import org.cny.jwf.netw.impl.RCv;
 import org.cny.jwf.netw.r.Cmd;
+import org.cny.jwf.netw.r.DoNotCmd;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwBase;
 import org.cny.jwf.netw.r.NetwRunnable;
@@ -20,6 +22,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	public static final byte MK_NRC = 4;
 	public static final byte MK_NRC_LI = 10;
 	public static final byte MK_NRC_LO = 20;
+	public static final byte MK_NRC_UR = 30;
 	protected OBDH obdh;
 	protected RCv rc;
 	private final MsgListener l;
@@ -85,6 +88,10 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	public <T> T lo(Object args, Class<T> cls) throws Exception {
 		return this.rc.exec(MK_NRC_LO, args, cls);
+	}
+
+	public void ur() throws Exception {
+		this.rc.exec(MK_NRC_UR, new HashMap<String, Object>(), new DoNotCmd());
 	}
 
 	public void rcClear(Exception e) {

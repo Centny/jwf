@@ -12,7 +12,7 @@ import org.cny.jwf.util.Utils;
 public class Msg implements Serializable {
 
 	private static final long serialVersionUID = 26764532216064436L;
-//	private static int IDC = 0;
+	// private static int IDC = 0;
 	public static final int MS_REV = 0;
 	public static final int MS_MARK = 1;
 	public static final int MS_READED = 1 << 1;
@@ -26,6 +26,7 @@ public class Msg implements Serializable {
 	public int t;
 	public String d;
 	public byte[] c;
+	public String a;
 	public long time;
 	public int status = MS_REV;
 
@@ -35,7 +36,7 @@ public class Msg implements Serializable {
 
 	public Msg(String s, String r, int t, byte[] c, int status) {
 		super();
-//		this.i = "L" + IDC++;
+		// this.i = "L" + IDC++;
 		this.s = s;
 		this.r = new String[] { r };
 		this.t = t;
@@ -52,6 +53,7 @@ public class Msg implements Serializable {
 		this.t = im.getT();
 		this.d = im.getD();
 		this.c = im.getC().toByteArray();
+		this.a = im.getA();
 		this.time = im.getTime();
 	}
 
@@ -85,6 +87,11 @@ public class Msg implements Serializable {
 		this.c = c.getBytes();
 	}
 
+	@Name(name = "A")
+	public void setA(String a) {
+		this.a = a;
+	}
+
 	@Name(name = "TIME")
 	public void setTime(long time) {
 		this.time = time;
@@ -98,7 +105,7 @@ public class Msg implements Serializable {
 	public Object[] toObjects() {
 		return new Object[] { this.i, this.s,
 				this.r == null ? null : Utils.join(this.r), d, t,
-				this.c == null ? null : new String(this.c), this.time,
+				this.c == null ? null : new String(this.c), this.a, this.time,
 				this.status };
 	}
 }
