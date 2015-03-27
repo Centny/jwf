@@ -1,17 +1,25 @@
 package org.cny.jwf.util;
 
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.SoftReference;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 public abstract class ObjPool<T> {
-	protected int max = 100;
-	protected Map<Object, T> objs = new HashMap<Object, T>();
-	protected List<Object> idx = new LinkedList<Object>();
+	class Ref extends SoftReference<T> {
+		Object key;
 
-	public ObjPool(int max) {
-		this.max = max;
+		public Ref(Object key, T referent, ReferenceQueue<? super T> q) {
+			super(referent, q);
+			this.key = key;
+		}
+
+	}
+
+	protected Map<Object, Ref> objs = new HashMap<Object, Ref>();
+	protected ReferenceQueue<T> quque = new ReferenceQueue<T>();
+
+	public ObjPool() {
 	}
 
 	public T load(Object key, Object... args) throws Exception {
@@ -22,23 +30,29 @@ public abstract class ObjPool<T> {
 		if (key == null) {
 			return null;
 		}
-		T val;
-		if (this.objs.containsKey(key)) {
-			val = this.objs.get(key);
-			this.idx.remove(key);
-		} else {
-			if (this.idx.size() >= this.max) {
-				this.objs.remove(this.idx.get(0));
-				this.idx.remove(0);
-			}
-			val = this.create(key, args);
-			if (val == null) {
-				return null;
-			}
-			this.objs.put(key, val);
+		this.gc();
+		Object rkey = this.createKey(key, args);
+		T val = null;
+		if (this.objs.containsKey(rkey)) {
+			val = this.objs.get(rkey).get();
 		}
-		this.idx.add(key);
+		if (val == null) {
+			val = this.create(key, args);
+			this.objs.put(rkey, new Ref(rkey, val, this.quque));
+		}
 		return val;
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void gc() {
+		Ref ref;
+		while ((ref = (ObjPool<T>.Ref) this.quque.poll()) != null) {
+			this.objs.remove(ref.key);
+		}
+	}
+
+	protected Object createKey(Object key, Object[] args) {
+		return key;
 	}
 
 	protected abstract T create(Object key, Object[] args) throws Exception;

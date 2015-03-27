@@ -7,10 +7,14 @@ public class ObjPoolTest {
 
 	int tc = 0;
 
+	public class Ary {
+
+	}
+
 	@Test
 	public void testPool() throws Exception {
 		tc = 0;
-		ObjPool<String> op = new ObjPool<String>(5) {
+		ObjPool<String> op = new ObjPool<String>() {
 
 			@Override
 			protected String create(Object key, Object[] args) {
@@ -40,8 +44,23 @@ public class ObjPoolTest {
 				op.load("abc" + j, "val");
 			}
 		}
-		Assert.assertEquals(105, tc);
+		Assert.assertEquals(10, tc);
 		op.load("sss");
 		op.load_(null, null);
+	}
+
+	@Test
+	public void testPool2() throws Exception {
+		ObjPool<byte[]> op2 = new ObjPool<byte[]>() {
+
+			@Override
+			protected byte[] create(Object key, Object[] args) {
+				return new byte[102400];
+			}
+
+		};
+		for (int i = 0; i < 100000; i++) {
+			op2.load("o" + i);
+		}
 	}
 }
