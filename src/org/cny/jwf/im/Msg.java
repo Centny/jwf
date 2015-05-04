@@ -45,6 +45,18 @@ public class Msg implements Serializable {
 		this.status = status;
 	}
 
+	public Msg(Msg m) {
+		this.i = m.i;
+		this.s = m.s;
+		this.r = m.r;
+		this.t = m.t;
+		this.d = m.d;
+		this.c = m.c;
+		this.a = m.a;
+		this.time = m.time;
+		this.status = m.status;
+	}
+
 	public Msg(ImMsg im) {
 		this.i = im.getI();
 		this.s = im.getS();
@@ -95,6 +107,11 @@ public class Msg implements Serializable {
 	@Name(name = "TIME")
 	public void setTime(long time) {
 		this.time = time;
+	}
+
+	@Name(name = "STATUS")
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override
