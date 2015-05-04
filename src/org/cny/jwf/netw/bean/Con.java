@@ -3,6 +3,7 @@ package org.cny.jwf.netw.bean;
 public class Con {
 	// public String cid;
 	public String r;
+	public String token;
 	public String s;
 	public byte t;
 	public int c;
@@ -13,6 +14,10 @@ public class Con {
 
 	public void setR(String r) {
 		this.r = r;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 	public void setS(String s) {
