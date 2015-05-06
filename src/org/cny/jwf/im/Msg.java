@@ -1,7 +1,6 @@
 package org.cny.jwf.im;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -116,7 +115,9 @@ public class Msg implements Serializable {
 
 	@Override
 	public String toString() {
-		return Arrays.toString(this.toObjects());
+		return "i:" + this.i + ",s:" + this.s + ",r:" + this.r + ",t:" + this.t
+				+ ",d:" + this.d + ",a:" + this.a + ",time:" + this.time
+				+ ",status:" + this.status;
 	}
 
 	public Object[] toObjects() {

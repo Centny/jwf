@@ -32,6 +32,12 @@ public class Con {
 		this.c = c;
 	}
 
+	@Override
+	public String toString() {
+		return "R(" + this.r + "),S(" + this.s + "),T(" + this.t + "),C("
+				+ this.c + "),Token(" + this.token + ")";
+	}
+
 	public static class Res {
 		public int code = -1;
 		public Con res = new Con();
