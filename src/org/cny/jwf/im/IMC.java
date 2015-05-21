@@ -19,6 +19,7 @@ import org.cny.jwf.netw.r.NetwVer;
 public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	public static final byte MK_NIM = 0;
+	public static final byte MK_NMR = 2;
 	public static final byte MK_NRC = 4;
 	public static final byte MK_NRC_LI = 10;
 	public static final byte MK_NRC_LO = 20;
@@ -27,6 +28,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	protected RCv rc;
 	private final MsgListener l;
 	protected NetwVer nv;
+	protected NetwVer mrc;
 
 	public static interface MsgListener {
 		public void onMsg(Msg m);
@@ -45,6 +47,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 		NetwBase nb = this.createNetwBase();
 		this.rc = new RCv(new NetwRWv_i(new OBDC(nb, MK_NRC)), this);
 		this.rw = this.nv = new NetwRWv_i(new OBDC(nb, MK_NIM));
+		this.mrc = new NetwRWv_i(new OBDC(nb, MK_NMR));
 		this.obdh.addh(MK_NIM, this);
 		this.obdh.addh(MK_NRC, this.rc);
 		return this.rw;
@@ -92,6 +95,13 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	public void ur() throws Exception {
 		this.rc.exec(MK_NRC_UR, new HashMap<String, Object>(), new DoNotCmd());
+	}
+
+	public void mr(String a, String mid) throws Exception {
+		HashMap<String, Object> kvs = new HashMap<String, Object>();
+		kvs.put("a", a);
+		kvs.put("i", mid);
+		this.mrc.writev(kvs);
 	}
 
 	public void rcClear(Exception e) {

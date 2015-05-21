@@ -1,6 +1,5 @@
 package org.cny.jwf.im;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,9 +53,10 @@ public class PbSckIMCTest {
 				msg_c++;
 				try {
 					imc.sms(new String[] { m.s }, 0, "C-中文->".getBytes());
+					imc.mr(m.a, m.i);
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
