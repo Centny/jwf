@@ -66,7 +66,7 @@ public abstract class NetwRW implements Netw {
 	@Override
 	public byte[] readm() throws IOException, ModException {
 		this.readw(this.hbuf);
-		short len = 0;
+		int len = 0;
 		len += (this.hbuf[3] & 0xff) << 8;
 		len += (this.hbuf[4] & 0xff);
 		if (!valid_h(this.hbuf, 0) || len < 1) {

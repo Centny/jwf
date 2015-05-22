@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
@@ -262,5 +263,19 @@ public class NetwTest {
 		} catch (Exception e) {
 
 		}
+	}
+
+	@Test
+	public void testR() throws Exception {
+//		FileInputStream fi = new FileInputStream("/tmp/tt.data");
+		//[94, 126, 94, -93, 100]
+		byte[] bys = new byte[] { (byte) -93, (byte) 100 };
+//		fi.read(bys);
+		int len = 0;
+		len += (bys[0]&0xff) << 8;
+		len += (bys[1]&0xff);
+		System.err.println(len);
+//		fi.close();
+//		-23708
 	}
 }
