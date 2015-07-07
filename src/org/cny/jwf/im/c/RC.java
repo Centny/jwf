@@ -11,8 +11,11 @@ import org.cny.jwf.netw.bean.Con;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.EvnListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RC implements EvnListener, MsgListener {
+	private static Logger L = LoggerFactory.getLogger(RC.class);
 	protected Thread thr;
 	public String r;
 	public int rc = 0;
@@ -57,6 +60,7 @@ public class RC implements EvnListener, MsgListener {
 	@Override
 	public void onMsg(Msg m) {
 		this.rc++;
+		L.debug("receive message->{}->{}", m, new String(m.c));
 	}
 
 	@Override

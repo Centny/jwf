@@ -28,6 +28,9 @@ public class Msg implements Serializable {
 	public String a;
 	public long time;
 	public int status = MS_REV;
+	//
+	// the process rate.
+	public float rate;
 
 	public Msg() {
 		// do nothing.
