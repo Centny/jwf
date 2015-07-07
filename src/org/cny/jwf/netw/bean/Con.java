@@ -7,6 +7,7 @@ public class Con {
 	public String s;
 	public byte t;
 	public int c;
+	public long time;
 
 	// public void setCid(String cid) {
 	// this.cid = cid;
@@ -30,6 +31,10 @@ public class Con {
 
 	public void setC(int c) {
 		this.c = c;
+	}
+
+	public void setTime(long time) {
+		this.time = time;
 	}
 
 	@Override
