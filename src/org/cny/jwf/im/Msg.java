@@ -20,6 +20,7 @@ public class Msg implements Serializable {
 	public static final int MS_SENDED = 1 << 4;
 	public static final int MS_SEND_ERR = 1 << 5;
 	public String i;
+	public long idx;
 	public String s;
 	public String[] r;
 	public int t;
@@ -116,15 +117,20 @@ public class Msg implements Serializable {
 		this.status = status;
 	}
 
+	@Name(name = "IDX")
+	public void setIdx(long idx) {
+		this.idx = idx;
+	}
+
 	@Override
 	public String toString() {
-		return "i:" + this.i + ",s:" + this.s + ",r:" + this.r + ",t:" + this.t
-				+ ",d:" + this.d + ",a:" + this.a + ",time:" + this.time
-				+ ",status:" + this.status;
+		return "i:" + this.i + ",idx:" + this.idx + ",s:" + this.s + ",r:"
+				+ this.r + ",t:" + this.t + ",d:" + this.d + ",a:" + this.a
+				+ ",time:" + this.time + ",status:" + this.status;
 	}
 
 	public Object[] toObjects() {
-		return new Object[] { this.i, this.s,
+		return new Object[] { this.i, this.idx, this.s,
 				this.r == null ? null : Utils.join(this.r), d, t,
 				this.c == null ? null : new String(this.c), this.a, this.time,
 				this.status };
