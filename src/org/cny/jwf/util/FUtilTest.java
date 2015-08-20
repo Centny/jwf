@@ -21,4 +21,30 @@ public class FUtilTest {
 		Hash h2 = FUtil.sha1(bis, null);
 		Assert.assertArrayEquals(h1.hash, h2.hash);
 	}
+
+	@Test
+	public void testCreate() throws Exception {
+		FUtil.create("build/t1.data", 1021);
+		FUtil.create("build/t2.data", 1024);
+		FUtil.create("build/t3.data", 1023);
+		FUtil.create("build/t4.data", 11);
+		try {
+			FUtil.create("/sss", 1023);
+		} catch (Exception e) {
+
+		}
+	}
+
+//	@Test
+//	public void testReset() throws Exception {
+//		FUtil.create("build/d.dat", 1021);
+//		FileInputStream fis = new FileInputStream("build/d.dat");
+//		byte[] buf1 = new byte[1024];
+//		byte[] buf2 = new byte[1024];
+//		fis.read(buf1);
+//		fis.reset();
+//		fis.read(buf2);
+//		fis.close();
+//		
+//	}
 }
