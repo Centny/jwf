@@ -52,12 +52,26 @@ public abstract class ObjPool<T> {
 	}
 
 	protected Object createKey(Object key, Object[] args) {
-		return key;
+		if (key instanceof Key) {
+			return ((Key) key).findKey();
+		} else {
+			return key.toString();
+		}
 	}
 
 	public void add(Object key, T val) {
-		this.objs.put(key, new Ref(key, val, this.quque));
+		Object rk = null;
+		if (key instanceof Key) {
+			rk = ((Key) key).findKey();
+		} else {
+			rk = key;
+		}
+		this.objs.put(rk, new Ref(rk, val, this.quque));
 	}
 
 	protected abstract T create(Object key, Object[] args) throws Exception;
+
+	public static interface Key {
+		Object findKey();
+	}
 }
