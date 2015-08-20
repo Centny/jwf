@@ -55,5 +55,9 @@ public abstract class ObjPool<T> {
 		return key;
 	}
 
+	public void add(Object key, T val) {
+		this.objs.put(key, new Ref(key, val, this.quque));
+	}
+
 	protected abstract T create(Object key, Object[] args) throws Exception;
 }
