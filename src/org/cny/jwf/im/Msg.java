@@ -19,6 +19,7 @@ public class Msg implements Serializable {
 	public static final int MS_SENDING = 1 << 3;
 	public static final int MS_SENDED = 1 << 4;
 	public static final int MS_SEND_ERR = 1 << 5;
+	public static final int MS_DL_ERR = 1 << 6;
 	public String i;
 	public long idx;
 	public String s;
