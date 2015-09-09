@@ -15,6 +15,8 @@ import org.cny.jwf.netw.r.NetwBase;
 import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.CmdListener;
 import org.cny.jwf.netw.r.NetwVer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class IMC extends RWRunnerv implements CmdListener {
 
@@ -24,6 +26,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	public static final byte MK_NRC_LI = 10;
 	public static final byte MK_NRC_LO = 20;
 	public static final byte MK_NRC_UR = 30;
+	private static Logger L = LoggerFactory.getLogger(IMC.class);
 	protected OBDH obdh;
 	protected RCv rc;
 	private final MsgListener l;
@@ -44,12 +47,16 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	@Override
 	protected Netw createNetw() throws Exception {
-		NetwBase nb = this.createNetwBase();
-		this.rc = new RCv(new NetwRWv_i(new OBDC(nb, MK_NRC)), this);
-		this.rw = this.nv = new NetwRWv_i(new OBDC(nb, MK_NIM));
-		this.mrc = new NetwRWv_i(new OBDC(nb, MK_NMR));
-		this.obdh.addh(MK_NIM, this);
-		this.obdh.addh(MK_NRC, this.rc);
+		L.debug("creating connection->");
+		this.rcClear(new Exception("Recreate Connection"));
+		synchronized (this) {
+			NetwBase nb = this.createNetwBase();
+			this.rc = new RCv(new NetwRWv_i(new OBDC(nb, MK_NRC)), this);
+			this.rw = this.nv = new NetwRWv_i(new OBDC(nb, MK_NIM));
+			this.mrc = new NetwRWv_i(new OBDC(nb, MK_NMR));
+			this.obdh.addh(MK_NIM, this);
+			this.obdh.addh(MK_NRC, this.rc);
+		}
 		return this.rw;
 	}
 
@@ -105,8 +112,10 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	}
 
 	public void rcClear(Exception e) {
-		if (this.rc != null) {
-			this.rc.clear(e);
+		synchronized (this) {
+			if (this.rc != null) {
+				this.rc.clear(e);
+			}
 		}
 	}
 }

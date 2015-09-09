@@ -67,21 +67,20 @@ public class RC implements CmdListener {
 	}
 
 	public void exec(byte m, Cmd args, CmdListener l) throws Exception {
-		byte[] bs = new byte[] { (byte) (this.ei_cc >> 8), (byte) this.ei_cc,
-				0, m };
-		List<Cmd> ms = new ArrayList<Cmd>();
-		ms.add(this.rw.newM(bs, 0, bs.length));
-		ms.add(args);
-		short tei = 0;
 		synchronized (this) {
-			tei = this.next_ei();
-		}
-		try {
-			this.hs.put(tei, l);
-			this.rw.writeM(ms);
-		} catch (Exception e) {
-			this.hs.remove(tei);
-			throw e;
+			byte[] bs = new byte[] { (byte) (this.ei_cc >> 8),
+					(byte) this.ei_cc, 0, m };
+			List<Cmd> ms = new ArrayList<Cmd>();
+			ms.add(this.rw.newM(bs, 0, bs.length));
+			ms.add(args);
+			short tei = this.next_ei();
+			try {
+				this.hs.put(tei, l);
+				this.rw.writeM(ms);
+			} catch (Exception e) {
+				this.hs.remove(tei);
+				throw e;
+			}
 		}
 
 	}
@@ -100,36 +99,41 @@ public class RC implements CmdListener {
 			L.warn("RC receive invalid command for data less 2:" + m.toBs());
 			return;
 		}
-		Short mark = m.shortv(0);
-		if (this.hs.containsKey(mark)) {
-			try {
-				m.forward(3);
-				this.hs.get(mark).onCmd(nr, m);
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				this.hs.remove(mark);
+		synchronized (this) {
+			Short mark = m.shortv(0);
+			if (this.hs.containsKey(mark)) {
+				try {
+					m.forward(3);
+					this.hs.get(mark).onCmd(nr, m);
+				} catch (Exception e) {
+					throw e;
+				} finally {
+					this.hs.remove(mark);
+				}
+			} else {
+				L.warn("RC response handler not found by mark:" + mark);
 			}
-		} else {
-			L.warn("RC response handler not found by mark:" + mark);
 		}
 	}
 
 	public void clear(Exception e) {
-		for (CmdListener s : this.hs.values()) {
-			if (!(s instanceof CmdL)) {
-				continue;
+		synchronized (this) {
+			for (CmdListener s : this.hs.values()) {
+				if (!(s instanceof CmdL)) {
+					continue;
+				}
+				CmdL l = (CmdL) s;
+				Exception te = e;
+				if (te == null) {
+					te = new Exception("RC have bean cleared");
+				}
+				synchronized (l) {
+					l.setE(te);
+					l.notifyAll();
+				}
 			}
-			CmdL l = (CmdL) s;
-			Exception te = e;
-			if (te == null) {
-				te = new Exception("RC have bean cleared");
-			}
-			synchronized (l) {
-				l.setE(te);
-				l.notifyAll();
-			}
+			L.debug("clear {} command success", this.hs.size());
+			this.hs.clear();
 		}
-		this.hs.clear();
 	}
 }
