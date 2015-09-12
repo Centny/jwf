@@ -43,6 +43,18 @@ public abstract class ObjPool<T> {
 		return val;
 	}
 
+	public T find(Object key, Object[] args) {
+		if (key == null) {
+			return null;
+		}
+		Object rkey = this.createKey(key, args);
+		if (this.objs.containsKey(rkey)) {
+			return this.objs.get(rkey).get();
+		} else {
+			return null;
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	protected void gc() {
 		Ref ref;
