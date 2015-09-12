@@ -10,6 +10,7 @@ public abstract class SckIMC extends IMC {
 	protected String host;
 	protected int port;
 	protected Socket sck;
+	protected boolean showLog;
 
 	public SckIMC(EvnListener e, MsgListener l, String host, int port) {
 		super(e, l);
@@ -27,8 +28,20 @@ public abstract class SckIMC extends IMC {
 	@Override
 	protected NetwBase createNetwBase() throws Exception {
 		this.sck = new Socket(this.host, this.port);
-		return new NetwRWbase(this.sck.getOutputStream(), 10240,
+		this.sck.setTcpNoDelay(true);
+		this.sck.setSendBufferSize(5);
+		NetwRWbase nrw = new NetwRWbase(this.sck.getOutputStream(), 10240,
 				this.sck.getInputStream(), 102400);
+		nrw.setShowLog(this.showLog);
+		return nrw;
+	}
+
+	/**
+	 * @param showLog
+	 *            the showLog to set
+	 */
+	public void setShowLog(boolean showLog) {
+		this.showLog = showLog;
 	}
 
 }

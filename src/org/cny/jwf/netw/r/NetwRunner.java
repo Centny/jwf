@@ -48,13 +48,17 @@ public abstract class NetwRunner implements NetwRunnable {
 			} catch (SocketException e) {
 				this.evnl.onErr(this, e);
 				this.running = false;
+				L.debug("run_c ->SocketException:{}", e.getMessage());
 			} catch (EOFException e) {
 				this.evnl.onErr(this, e);
 				this.running = false;
+				L.debug("run_c ->EOFException:{}", e.getMessage());
 			} catch (ModException e) {
 				L.error(e.getMessage());
+				L.debug("run_c ->ModException:{}", e.getMessage());
 			} catch (Exception e) {
 				this.evnl.onErr(this, e);
+				L.debug("run_c ->Exception:{}", e.getMessage());
 			}
 		}
 		this.running = false;

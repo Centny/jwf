@@ -12,14 +12,19 @@ import java.util.List;
 import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NetwRWbase extends BufferedOutputStream implements NetwBase {
-//	private static final Logger L = LoggerFactory.getLogger(NetwRWbase.class);
+	private static final Logger L = LoggerFactory.getLogger(NetwRWbase.class);
 	protected int limit;
 	protected InputStream in;
 	protected OutputStream out;
 	// private Writer out;
 	protected final ByteBuffer wbuf = ByteBuffer.allocate(5);
+	// message write count.
+	protected long wc = 0;
+	protected boolean showLog;
 
 	public NetwRWbase(OutputStream out, int sz, InputStream in, int limit) {
 		super(out, sz);
@@ -77,7 +82,26 @@ public class NetwRWbase extends BufferedOutputStream implements NetwBase {
 				this.out.write(m.bys(), m.offset(), m.length());
 			}
 			this.out.flush();
-//			L.debug("sending message len:{}", len);
+			this.wc++;
+			if (this.showLog) {
+				L.debug("sending message len:{}", len);
+			}
 		}
 	}
+
+	/**
+	 * @return the wc
+	 */
+	public long getWc() {
+		return wc;
+	}
+
+	/**
+	 * @param showLog
+	 *            the showLog to set
+	 */
+	public void setShowLog(boolean showLog) {
+		this.showLog = showLog;
+	}
+
 }

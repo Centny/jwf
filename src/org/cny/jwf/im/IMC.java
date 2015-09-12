@@ -32,6 +32,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 	private final MsgListener l;
 	protected NetwVer nv;
 	protected NetwVer mrc;
+	protected NetwBase base;
 
 	public static interface MsgListener {
 		public void onMsg(Msg m);
@@ -56,6 +57,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 			this.mrc = new NetwRWv_i(new OBDC(nb, MK_NMR));
 			this.obdh.addh(MK_NIM, this);
 			this.obdh.addh(MK_NRC, this.rc);
+			this.base = nb;
 		}
 		return this.rw;
 	}
@@ -117,5 +119,9 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 				this.rc.clear(e);
 			}
 		}
+	}
+
+	public NetwBase getBase() {
+		return this.base;
 	}
 }
