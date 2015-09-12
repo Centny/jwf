@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 public class RC implements EvnListener, MsgListener {
 	private static Logger L = LoggerFactory.getLogger(RC.class);
-	protected Thread thr;
+	public Thread thr;
 	public String r;
 	public int rc = 0;
 	public int ec = 0;
@@ -25,6 +25,7 @@ public class RC implements EvnListener, MsgListener {
 	public RC(String host, int port) {
 		this.imc = new PbSckIMC(this, this, host, port);
 		this.thr = new Thread(this.imc);
+		this.thr.setName("RC-" + this.imc);
 		this.thr.start();
 	}
 
@@ -76,6 +77,17 @@ public class RC implements EvnListener, MsgListener {
 	@Override
 	public void onErr(NetwRunnable nr, Throwable e) {
 		this.ec++;
+	}
+
+	/**
+	 * stop and wait thread exit.
+	 * 
+	 * @throws Exception
+	 */
+	public void stopw() throws Exception {
+		this.imc.stop();
+		this.imc.close();
+		this.thr.join();
 	}
 
 }
