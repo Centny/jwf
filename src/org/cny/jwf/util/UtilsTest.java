@@ -54,6 +54,11 @@ public class UtilsTest {
 		ss.add("3");
 		Assert.assertEquals("1,2,3", Utils.join(ss));
 		Assert.assertEquals("", Utils.join((List<String>) null));
+		//
+		Assert.assertEquals("1,2,3",
+				Utils.join(new String[] { "0", "1", "2", "3", "4" }, 1, 3, ","));
+		Assert.assertEquals("0,1,2",
+				Utils.join(new String[] { "0", "1", "2", "3", "4" }, 0, 3, ","));
 	}
 
 	@Test

@@ -14,8 +14,7 @@ public class FileTest {
 	@Test
 	public void testRename() throws Exception {
 		IO.appendLine("data/t.txt", "xxx");
-		Assert.assertTrue(new File("data/t.txt").renameTo(new File(
-				"build/R1.txt")));
+		Assert.assertTrue(new File("data/t.txt").renameTo(new File("build/R1.txt")));
 	}
 
 	@Test
@@ -30,5 +29,20 @@ public class FileTest {
 		log.error("sfsfs4");
 		log.error("sfsfs5");
 		log.error("sfsfs6");
+	}
+
+	@Test
+	public void abc() {
+		Object[] as=new Object[] { 1, 2, 3 };
+		this.a(1, 2.3);
+		this.a(as);
+	}
+
+	public void a(Object... args) {
+		System.out.println(args);
+	}
+
+	public void b(Object[] args) {
+
 	}
 }

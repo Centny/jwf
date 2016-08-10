@@ -170,6 +170,7 @@ public class NetwTest {
 		}.createNetw();
 	}
 
+	@SuppressWarnings("resource")
 	@Test
 	public void testErr() throws IOException {
 		try {

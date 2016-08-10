@@ -48,9 +48,16 @@ public class Utils {
 		if (vals == null || vals.length < 1) {
 			return "";
 		}
+		return join(vals, 0, vals.length, seq);
+	}
+
+	public static <T> String join(T[] vals, int start, int len, String seq) {
+		if (vals == null || vals.length < 1) {
+			return "";
+		}
 		StringBuffer sb = new StringBuffer();
-		sb.append(vals[0].toString());
-		for (int i = 1; i < vals.length; i++) {
+		sb.append(vals[start].toString());
+		for (int i = start + 1; i < start + len; i++) {
 			if (vals[i] == null) {
 				continue;
 			}
