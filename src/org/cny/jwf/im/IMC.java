@@ -2,6 +2,7 @@ package org.cny.jwf.im;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.cny.jwf.im.pb.Msg.ImMsg;
 import org.cny.jwf.netw.RWRunnerv;
@@ -85,8 +86,7 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 		return this.rc.exec(MK_NRC_LI, args);
 	}
 
-	public <T> T li(Object args, Class<T> cls) throws Exception,
-			InterruptedException {
+	public <T> T li(Object args, Class<T> cls) throws Exception, InterruptedException {
 		return this.rc.exec(MK_NRC_LI, args, cls);
 	}
 
@@ -104,6 +104,10 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 
 	public void ur() throws Exception {
 		this.rc.exec(MK_NRC_UR, new HashMap<String, Object>(), new DoNotCmd());
+	}
+
+	public void ur(Map<String, Object> args) throws Exception {
+		this.rc.exec(MK_NRC_UR, args, new DoNotCmd());
 	}
 
 	public void mr(String a, String mid) throws Exception {
