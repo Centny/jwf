@@ -2,7 +2,7 @@
 // source: msg.proto
 
 package org.cny.jwf.im.pb;
-@SuppressWarnings("unused")
+
 public final class Msg {
   private Msg() {}
   public static void registerAllExtensions(
@@ -14,80 +14,142 @@ public final class Msg {
 
     /**
      * <code>optional string i = 1;</code>
+     *
+     * <pre>
+     * </pre>
      */
     boolean hasI();
     /**
      * <code>optional string i = 1;</code>
+     *
+     * <pre>
+     * </pre>
      */
     java.lang.String getI();
     /**
      * <code>optional string i = 1;</code>
+     *
+     * <pre>
+     * </pre>
      */
     com.google.protobuf.ByteString
         getIBytes();
 
     /**
      * <code>optional string s = 2;</code>
+     *
+     * <pre>
+     *the sender.
+     * </pre>
      */
     boolean hasS();
     /**
      * <code>optional string s = 2;</code>
+     *
+     * <pre>
+     *the sender.
+     * </pre>
      */
     java.lang.String getS();
     /**
      * <code>optional string s = 2;</code>
+     *
+     * <pre>
+     *the sender.
+     * </pre>
      */
     com.google.protobuf.ByteString
         getSBytes();
 
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     com.google.protobuf.ProtocolStringList
         getRList();
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     int getRCount();
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     java.lang.String getR(int index);
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     com.google.protobuf.ByteString
         getRBytes(int index);
 
     /**
      * <code>required uint32 t = 4;</code>
+     *
+     * <pre>
+     *the message type.
+     * </pre>
      */
     boolean hasT();
     /**
      * <code>required uint32 t = 4;</code>
+     *
+     * <pre>
+     *the message type.
+     * </pre>
      */
     int getT();
 
     /**
      * <code>optional string d = 5;</code>
+     *
+     * <pre>
+     * </pre>
      */
     boolean hasD();
     /**
      * <code>optional string d = 5;</code>
+     *
+     * <pre>
+     * </pre>
      */
     java.lang.String getD();
     /**
      * <code>optional string d = 5;</code>
+     *
+     * <pre>
+     * </pre>
      */
     com.google.protobuf.ByteString
         getDBytes();
 
     /**
      * <code>required bytes c = 6;</code>
+     *
+     * <pre>
+     *the content.
+     * </pre>
      */
     boolean hasC();
     /**
      * <code>required bytes c = 6;</code>
+     *
+     * <pre>
+     *the content.
+     * </pre>
      */
     com.google.protobuf.ByteString getC();
 
@@ -113,6 +175,32 @@ public final class Msg {
      * <code>optional int64 time = 8;</code>
      */
     long getTime();
+
+    /**
+     * <code>optional string status = 9;</code>
+     *
+     * <pre>
+     *the message receive status
+     * </pre>
+     */
+    boolean hasStatus();
+    /**
+     * <code>optional string status = 9;</code>
+     *
+     * <pre>
+     *the message receive status
+     * </pre>
+     */
+    java.lang.String getStatus();
+    /**
+     * <code>optional string status = 9;</code>
+     *
+     * <pre>
+     *the message receive status
+     * </pre>
+     */
+    com.google.protobuf.ByteString
+        getStatusBytes();
   }
   /**
    * Protobuf type {@code ImMsg}
@@ -214,6 +302,12 @@ public final class Msg {
               time_ = input.readInt64();
               break;
             }
+            case 74: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000080;
+              status_ = bs;
+              break;
+            }
           }
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
@@ -261,12 +355,18 @@ public final class Msg {
     private java.lang.Object i_;
     /**
      * <code>optional string i = 1;</code>
+     *
+     * <pre>
+     * </pre>
      */
     public boolean hasI() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
      * <code>optional string i = 1;</code>
+     *
+     * <pre>
+     * </pre>
      */
     public java.lang.String getI() {
       java.lang.Object ref = i_;
@@ -284,6 +384,9 @@ public final class Msg {
     }
     /**
      * <code>optional string i = 1;</code>
+     *
+     * <pre>
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getIBytes() {
@@ -303,12 +406,20 @@ public final class Msg {
     private java.lang.Object s_;
     /**
      * <code>optional string s = 2;</code>
+     *
+     * <pre>
+     *the sender.
+     * </pre>
      */
     public boolean hasS() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
      * <code>optional string s = 2;</code>
+     *
+     * <pre>
+     *the sender.
+     * </pre>
      */
     public java.lang.String getS() {
       java.lang.Object ref = s_;
@@ -326,6 +437,10 @@ public final class Msg {
     }
     /**
      * <code>optional string s = 2;</code>
+     *
+     * <pre>
+     *the sender.
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getSBytes() {
@@ -345,6 +460,10 @@ public final class Msg {
     private com.google.protobuf.LazyStringList r_;
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     public com.google.protobuf.ProtocolStringList
         getRList() {
@@ -352,18 +471,30 @@ public final class Msg {
     }
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     public int getRCount() {
       return r_.size();
     }
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     public java.lang.String getR(int index) {
       return r_.get(index);
     }
     /**
      * <code>repeated string r = 3;</code>
+     *
+     * <pre>
+     *the receiver.
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getRBytes(int index) {
@@ -374,12 +505,20 @@ public final class Msg {
     private int t_;
     /**
      * <code>required uint32 t = 4;</code>
+     *
+     * <pre>
+     *the message type.
+     * </pre>
      */
     public boolean hasT() {
       return ((bitField0_ & 0x00000004) == 0x00000004);
     }
     /**
      * <code>required uint32 t = 4;</code>
+     *
+     * <pre>
+     *the message type.
+     * </pre>
      */
     public int getT() {
       return t_;
@@ -389,12 +528,18 @@ public final class Msg {
     private java.lang.Object d_;
     /**
      * <code>optional string d = 5;</code>
+     *
+     * <pre>
+     * </pre>
      */
     public boolean hasD() {
       return ((bitField0_ & 0x00000008) == 0x00000008);
     }
     /**
      * <code>optional string d = 5;</code>
+     *
+     * <pre>
+     * </pre>
      */
     public java.lang.String getD() {
       java.lang.Object ref = d_;
@@ -412,6 +557,9 @@ public final class Msg {
     }
     /**
      * <code>optional string d = 5;</code>
+     *
+     * <pre>
+     * </pre>
      */
     public com.google.protobuf.ByteString
         getDBytes() {
@@ -431,12 +579,20 @@ public final class Msg {
     private com.google.protobuf.ByteString c_;
     /**
      * <code>required bytes c = 6;</code>
+     *
+     * <pre>
+     *the content.
+     * </pre>
      */
     public boolean hasC() {
       return ((bitField0_ & 0x00000010) == 0x00000010);
     }
     /**
      * <code>required bytes c = 6;</code>
+     *
+     * <pre>
+     *the content.
+     * </pre>
      */
     public com.google.protobuf.ByteString getC() {
       return c_;
@@ -499,6 +655,60 @@ public final class Msg {
       return time_;
     }
 
+    public static final int STATUS_FIELD_NUMBER = 9;
+    private java.lang.Object status_;
+    /**
+     * <code>optional string status = 9;</code>
+     *
+     * <pre>
+     *the message receive status
+     * </pre>
+     */
+    public boolean hasStatus() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string status = 9;</code>
+     *
+     * <pre>
+     *the message receive status
+     * </pre>
+     */
+    public java.lang.String getStatus() {
+      java.lang.Object ref = status_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          status_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string status = 9;</code>
+     *
+     * <pre>
+     *the message receive status
+     * </pre>
+     */
+    public com.google.protobuf.ByteString
+        getStatusBytes() {
+      java.lang.Object ref = status_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        status_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       i_ = "";
       s_ = "";
@@ -508,6 +718,7 @@ public final class Msg {
       c_ = com.google.protobuf.ByteString.EMPTY;
       a_ = "";
       time_ = 0L;
+      status_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -554,6 +765,9 @@ public final class Msg {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeInt64(8, time_);
       }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(9, getStatusBytes());
+      }
       getUnknownFields().writeTo(output);
     }
 
@@ -599,6 +813,10 @@ public final class Msg {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt64Size(8, time_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(9, getStatusBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -733,6 +951,8 @@ public final class Msg {
         bitField0_ = (bitField0_ & ~0x00000040);
         time_ = 0L;
         bitField0_ = (bitField0_ & ~0x00000080);
+        status_ = "";
+        bitField0_ = (bitField0_ & ~0x00000100);
         return this;
       }
 
@@ -794,6 +1014,10 @@ public final class Msg {
           to_bitField0_ |= 0x00000040;
         }
         result.time_ = time_;
+        if (((from_bitField0_ & 0x00000100) == 0x00000100)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.status_ = status_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -849,6 +1073,11 @@ public final class Msg {
         if (other.hasTime()) {
           setTime(other.getTime());
         }
+        if (other.hasStatus()) {
+          bitField0_ |= 0x00000100;
+          status_ = other.status_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -887,12 +1116,18 @@ public final class Msg {
       private java.lang.Object i_ = "";
       /**
        * <code>optional string i = 1;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public boolean hasI() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
        * <code>optional string i = 1;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public java.lang.String getI() {
         java.lang.Object ref = i_;
@@ -910,6 +1145,9 @@ public final class Msg {
       }
       /**
        * <code>optional string i = 1;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getIBytes() {
@@ -926,6 +1164,9 @@ public final class Msg {
       }
       /**
        * <code>optional string i = 1;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public Builder setI(
           java.lang.String value) {
@@ -939,6 +1180,9 @@ public final class Msg {
       }
       /**
        * <code>optional string i = 1;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public Builder clearI() {
         bitField0_ = (bitField0_ & ~0x00000001);
@@ -948,6 +1192,9 @@ public final class Msg {
       }
       /**
        * <code>optional string i = 1;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public Builder setIBytes(
           com.google.protobuf.ByteString value) {
@@ -963,12 +1210,20 @@ public final class Msg {
       private java.lang.Object s_ = "";
       /**
        * <code>optional string s = 2;</code>
+       *
+       * <pre>
+       *the sender.
+       * </pre>
        */
       public boolean hasS() {
         return ((bitField0_ & 0x00000002) == 0x00000002);
       }
       /**
        * <code>optional string s = 2;</code>
+       *
+       * <pre>
+       *the sender.
+       * </pre>
        */
       public java.lang.String getS() {
         java.lang.Object ref = s_;
@@ -986,6 +1241,10 @@ public final class Msg {
       }
       /**
        * <code>optional string s = 2;</code>
+       *
+       * <pre>
+       *the sender.
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getSBytes() {
@@ -1002,6 +1261,10 @@ public final class Msg {
       }
       /**
        * <code>optional string s = 2;</code>
+       *
+       * <pre>
+       *the sender.
+       * </pre>
        */
       public Builder setS(
           java.lang.String value) {
@@ -1015,6 +1278,10 @@ public final class Msg {
       }
       /**
        * <code>optional string s = 2;</code>
+       *
+       * <pre>
+       *the sender.
+       * </pre>
        */
       public Builder clearS() {
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1024,6 +1291,10 @@ public final class Msg {
       }
       /**
        * <code>optional string s = 2;</code>
+       *
+       * <pre>
+       *the sender.
+       * </pre>
        */
       public Builder setSBytes(
           com.google.protobuf.ByteString value) {
@@ -1045,6 +1316,10 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public com.google.protobuf.ProtocolStringList
           getRList() {
@@ -1052,18 +1327,30 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public int getRCount() {
         return r_.size();
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public java.lang.String getR(int index) {
         return r_.get(index);
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getRBytes(int index) {
@@ -1071,6 +1358,10 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public Builder setR(
           int index, java.lang.String value) {
@@ -1084,6 +1375,10 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public Builder addR(
           java.lang.String value) {
@@ -1097,6 +1392,10 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public Builder addAllR(
           java.lang.Iterable<java.lang.String> values) {
@@ -1108,6 +1407,10 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public Builder clearR() {
         r_ = com.google.protobuf.LazyStringArrayList.EMPTY;
@@ -1117,6 +1420,10 @@ public final class Msg {
       }
       /**
        * <code>repeated string r = 3;</code>
+       *
+       * <pre>
+       *the receiver.
+       * </pre>
        */
       public Builder addRBytes(
           com.google.protobuf.ByteString value) {
@@ -1132,18 +1439,30 @@ public final class Msg {
       private int t_ ;
       /**
        * <code>required uint32 t = 4;</code>
+       *
+       * <pre>
+       *the message type.
+       * </pre>
        */
       public boolean hasT() {
         return ((bitField0_ & 0x00000008) == 0x00000008);
       }
       /**
        * <code>required uint32 t = 4;</code>
+       *
+       * <pre>
+       *the message type.
+       * </pre>
        */
       public int getT() {
         return t_;
       }
       /**
        * <code>required uint32 t = 4;</code>
+       *
+       * <pre>
+       *the message type.
+       * </pre>
        */
       public Builder setT(int value) {
         bitField0_ |= 0x00000008;
@@ -1153,6 +1472,10 @@ public final class Msg {
       }
       /**
        * <code>required uint32 t = 4;</code>
+       *
+       * <pre>
+       *the message type.
+       * </pre>
        */
       public Builder clearT() {
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -1164,12 +1487,18 @@ public final class Msg {
       private java.lang.Object d_ = "";
       /**
        * <code>optional string d = 5;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public boolean hasD() {
         return ((bitField0_ & 0x00000010) == 0x00000010);
       }
       /**
        * <code>optional string d = 5;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public java.lang.String getD() {
         java.lang.Object ref = d_;
@@ -1187,6 +1516,9 @@ public final class Msg {
       }
       /**
        * <code>optional string d = 5;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public com.google.protobuf.ByteString
           getDBytes() {
@@ -1203,6 +1535,9 @@ public final class Msg {
       }
       /**
        * <code>optional string d = 5;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public Builder setD(
           java.lang.String value) {
@@ -1216,6 +1551,9 @@ public final class Msg {
       }
       /**
        * <code>optional string d = 5;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public Builder clearD() {
         bitField0_ = (bitField0_ & ~0x00000010);
@@ -1225,6 +1563,9 @@ public final class Msg {
       }
       /**
        * <code>optional string d = 5;</code>
+       *
+       * <pre>
+       * </pre>
        */
       public Builder setDBytes(
           com.google.protobuf.ByteString value) {
@@ -1240,18 +1581,30 @@ public final class Msg {
       private com.google.protobuf.ByteString c_ = com.google.protobuf.ByteString.EMPTY;
       /**
        * <code>required bytes c = 6;</code>
+       *
+       * <pre>
+       *the content.
+       * </pre>
        */
       public boolean hasC() {
         return ((bitField0_ & 0x00000020) == 0x00000020);
       }
       /**
        * <code>required bytes c = 6;</code>
+       *
+       * <pre>
+       *the content.
+       * </pre>
        */
       public com.google.protobuf.ByteString getC() {
         return c_;
       }
       /**
        * <code>required bytes c = 6;</code>
+       *
+       * <pre>
+       *the content.
+       * </pre>
        */
       public Builder setC(com.google.protobuf.ByteString value) {
         if (value == null) {
@@ -1264,6 +1617,10 @@ public final class Msg {
       }
       /**
        * <code>required bytes c = 6;</code>
+       *
+       * <pre>
+       *the content.
+       * </pre>
        */
       public Builder clearC() {
         bitField0_ = (bitField0_ & ~0x00000020);
@@ -1380,6 +1737,106 @@ public final class Msg {
         return this;
       }
 
+      private java.lang.Object status_ = "";
+      /**
+       * <code>optional string status = 9;</code>
+       *
+       * <pre>
+       *the message receive status
+       * </pre>
+       */
+      public boolean hasStatus() {
+        return ((bitField0_ & 0x00000100) == 0x00000100);
+      }
+      /**
+       * <code>optional string status = 9;</code>
+       *
+       * <pre>
+       *the message receive status
+       * </pre>
+       */
+      public java.lang.String getStatus() {
+        java.lang.Object ref = status_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            status_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string status = 9;</code>
+       *
+       * <pre>
+       *the message receive status
+       * </pre>
+       */
+      public com.google.protobuf.ByteString
+          getStatusBytes() {
+        java.lang.Object ref = status_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          status_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string status = 9;</code>
+       *
+       * <pre>
+       *the message receive status
+       * </pre>
+       */
+      public Builder setStatus(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string status = 9;</code>
+       *
+       * <pre>
+       *the message receive status
+       * </pre>
+       */
+      public Builder clearStatus() {
+        bitField0_ = (bitField0_ & ~0x00000100);
+        status_ = getDefaultInstance().getStatus();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string status = 9;</code>
+       *
+       * <pre>
+       *the message receive status
+       * </pre>
+       */
+      public Builder setStatusBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000100;
+        status_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:ImMsg)
     }
 
@@ -1422,6 +1879,20 @@ public final class Msg {
      */
     com.google.protobuf.ByteString
         getCBytes();
+
+    /**
+     * <code>required string a = 3;</code>
+     */
+    boolean hasA();
+    /**
+     * <code>required string a = 3;</code>
+     */
+    java.lang.String getA();
+    /**
+     * <code>required string a = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getABytes();
   }
   /**
    * Protobuf type {@code RC}
@@ -1457,7 +1928,7 @@ public final class Msg {
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       initFields();
-	int mutable_bitField0_ = 0;
+      int mutable_bitField0_ = 0;
       com.google.protobuf.UnknownFieldSet.Builder unknownFields =
           com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
@@ -1485,6 +1956,12 @@ public final class Msg {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
               c_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              a_ = bs;
               break;
             }
           }
@@ -1611,9 +2088,52 @@ public final class Msg {
       }
     }
 
+    public static final int A_FIELD_NUMBER = 3;
+    private java.lang.Object a_;
+    /**
+     * <code>required string a = 3;</code>
+     */
+    public boolean hasA() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string a = 3;</code>
+     */
+    public java.lang.String getA() {
+      java.lang.Object ref = a_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          a_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string a = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getABytes() {
+      java.lang.Object ref = a_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        a_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       r_ = "";
       c_ = "";
+      a_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -1629,6 +2149,10 @@ public final class Msg {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasA()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -1641,6 +2165,9 @@ public final class Msg {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getCBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getABytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -1658,6 +2185,10 @@ public final class Msg {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getCBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getABytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -1780,6 +2311,8 @@ public final class Msg {
         bitField0_ = (bitField0_ & ~0x00000001);
         c_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        a_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -1816,6 +2349,10 @@ public final class Msg {
           to_bitField0_ |= 0x00000002;
         }
         result.c_ = c_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.a_ = a_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -1842,6 +2379,11 @@ public final class Msg {
           c_ = other.c_;
           onChanged();
         }
+        if (other.hasA()) {
+          bitField0_ |= 0x00000004;
+          a_ = other.a_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -1852,6 +2394,10 @@ public final class Msg {
           return false;
         }
         if (!hasC()) {
+          
+          return false;
+        }
+        if (!hasA()) {
           
           return false;
         }
@@ -2025,6 +2571,82 @@ public final class Msg {
   }
   bitField0_ |= 0x00000002;
         c_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object a_ = "";
+      /**
+       * <code>required string a = 3;</code>
+       */
+      public boolean hasA() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string a = 3;</code>
+       */
+      public java.lang.String getA() {
+        java.lang.Object ref = a_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            a_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string a = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getABytes() {
+        java.lang.Object ref = a_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          a_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string a = 3;</code>
+       */
+      public Builder setA(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        a_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string a = 3;</code>
+       */
+      public Builder clearA() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        a_ = getDefaultInstance().getA();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string a = 3;</code>
+       */
+      public Builder setABytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        a_ = value;
         onChanged();
         return this;
       }
@@ -4977,15 +5599,16 @@ public final class Msg {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\tmsg.proto\"b\n\005ImMsg\022\t\n\001i\030\001 \001(\t\022\t\n\001s\030\002 \001" +
+      "\n\tmsg.proto\"r\n\005ImMsg\022\t\n\001i\030\001 \001(\t\022\t\n\001s\030\002 \001" +
       "(\t\022\t\n\001r\030\003 \003(\t\022\t\n\001t\030\004 \002(\r\022\t\n\001d\030\005 \001(\t\022\t\n\001c" +
-      "\030\006 \002(\014\022\t\n\001a\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\"\032\n\002RC\022\t\n" +
-      "\001r\030\001 \002(\t\022\t\n\001c\030\002 \002(\t\"+\n\005DsMsg\022\021\n\001m\030\001 \002(\0132" +
-      "\006.ImMsg\022\017\n\002rc\030\002 \003(\0132\003.RC\"\036\n\002KV\022\013\n\003key\030\001 " +
-      "\002(\t\022\013\n\003val\030\002 \002(\t\"^\n\003Evn\022\013\n\003uid\030\001 \002(\t\022\014\n\004" +
-      "name\030\002 \002(\t\022\016\n\006action\030\003 \002(\t\022\014\n\004time\030\004 \002(\003" +
-      "\022\014\n\004type\030\005 \002(\005\022\020\n\003kvs\030\006 \003(\0132\003.KVB\027\n\021org." +
-      "cny.jwf.im.pbZ\002pb"
+      "\030\006 \002(\014\022\t\n\001a\030\007 \001(\t\022\014\n\004time\030\010 \001(\003\022\016\n\006statu" +
+      "s\030\t \001(\t\"%\n\002RC\022\t\n\001r\030\001 \002(\t\022\t\n\001c\030\002 \002(\t\022\t\n\001a" +
+      "\030\003 \002(\t\"+\n\005DsMsg\022\021\n\001m\030\001 \002(\0132\006.ImMsg\022\017\n\002rc" +
+      "\030\002 \003(\0132\003.RC\"\036\n\002KV\022\013\n\003key\030\001 \002(\t\022\013\n\003val\030\002 " +
+      "\002(\t\"^\n\003Evn\022\013\n\003uid\030\001 \002(\t\022\014\n\004name\030\002 \002(\t\022\016\n" +
+      "\006action\030\003 \002(\t\022\014\n\004time\030\004 \002(\003\022\014\n\004type\030\005 \002(" +
+      "\005\022\020\n\003kvs\030\006 \003(\0132\003.KVB\027\n\021org.cny.jwf.im.pb" +
+      "Z\002pb"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -5004,13 +5627,13 @@ public final class Msg {
     internal_static_ImMsg_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_ImMsg_descriptor,
-        new java.lang.String[] { "I", "S", "R", "T", "D", "C", "A", "Time", });
+        new java.lang.String[] { "I", "S", "R", "T", "D", "C", "A", "Time", "Status", });
     internal_static_RC_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_RC_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_RC_descriptor,
-        new java.lang.String[] { "R", "C", });
+        new java.lang.String[] { "R", "C", "A", });
     internal_static_DsMsg_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_DsMsg_fieldAccessorTable = new
