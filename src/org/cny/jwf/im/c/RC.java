@@ -7,7 +7,7 @@ import java.util.Map;
 import org.cny.jwf.im.IMC.MsgListener;
 import org.cny.jwf.im.Msg;
 import org.cny.jwf.im.PbSckIMC;
-import org.cny.jwf.netw.bean.Con;
+import org.cny.jwf.netw.bean.Conn;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwRunnable;
 import org.cny.jwf.netw.r.NetwRunnable.EvnListener;
@@ -34,7 +34,7 @@ public class RC implements EvnListener, MsgListener {
 		Map<String, Object> args = new HashMap<String, Object>();
 		args.put("token", token);
 		args.put("ctype", type);
-		Con.Res res = imc.li(args, Con.Res.class);
+		Conn.Res res = imc.li(args, Conn.Res.class);
 		if (res.code != 0) {
 			System.err.println("login error:" + res.err);
 			return;

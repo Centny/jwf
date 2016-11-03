@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.cny.jwf.netw.NetwM;
-import org.cny.jwf.netw.bean.Con;
+import org.cny.jwf.netw.bean.Conn;
 import org.cny.jwf.netw.r.Cmd;
 import org.cny.jwf.netw.r.Netw;
 import org.cny.jwf.netw.r.NetwRunnable;
@@ -68,7 +68,7 @@ public class PbSckIMCTest {
 		args.put("token", "abc");
 		args.put("ctype", "20");
 
-		Con.Res res = imc.li(args, Con.Res.class);
+		Conn.Res res = imc.li(args, Conn.Res.class);
 		Assert.assertEquals(0, res.code);
 		imc.li(args);
 		imc.li(args, new CmdListener() {
@@ -82,7 +82,7 @@ public class PbSckIMCTest {
 		// Thread.sleep(300);
 		Thread.sleep(1000);
 		imc.lo(args);
-		imc.lo(args, Con.Res.class);
+		imc.lo(args, Conn.Res.class);
 		imc.lo(args, new CmdListener() {
 
 			@Override
@@ -168,7 +168,7 @@ public class PbSckIMCTest {
 		args.put("token", "abc");
 		args.put("ctype", "20");
 
-		Con.Res res = imc.li(args, Con.Res.class);
+		Conn.Res res = imc.li(args, Conn.Res.class);
 		Assert.assertEquals(0, res.code);
 		for (int i = 0; i < 100; i++) {
 			imc.sms(new String[] { "S-Robot" }, (byte) 0, "abbb".getBytes());

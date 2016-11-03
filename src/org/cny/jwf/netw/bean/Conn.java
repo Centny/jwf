@@ -1,6 +1,6 @@
 package org.cny.jwf.netw.bean;
 
-public class Con {
+public class Conn {
 	// public String cid;
 	public String r;
 	public String token;
@@ -45,14 +45,14 @@ public class Con {
 
 	public static class Res {
 		public int code = -1;
-		public Con res = new Con();
+		public Conn res = new Conn();
 		public String err = null;
 
 		public void setCode(int code) {
 			this.code = code;
 		}
 
-		public void setRes(Con res) {
+		public void setRes(Conn res) {
 			this.res = res;
 		}
 

@@ -33,7 +33,7 @@ public class FileTest {
 
 	@Test
 	public void abc() {
-		Object[] as=new Object[] { 1, 2, 3 };
+		Object[] as = new Object[] { 1, 2, 3 };
 		this.a(1, 2.3);
 		this.a(as);
 	}
@@ -45,4 +45,12 @@ public class FileTest {
 	public void b(Object[] args) {
 
 	}
+
+	@Test
+	public void testAbc() {
+		Object a = new int[] { 1 };
+		Object[] ax = (Object[]) a;
+		System.out.println(ax);
+	}
+
 }

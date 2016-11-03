@@ -3,6 +3,7 @@ package org.cny.jwf.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 
 import org.cny.jwf.util.FUtil.Hash;
 import org.junit.Assert;
@@ -44,6 +45,7 @@ public class FUtilTest {
 		fis.close();
 		System.err.println(Utils.byte2hex(hash.hash));
 	}
+
 	// @Test
 	// public void testReset() throws Exception {
 	// FUtil.create("build/d.dat", 1021);
@@ -56,4 +58,35 @@ public class FUtilTest {
 	// fis.close();
 	//
 	// }
+	@Test
+	public void testShax() throws Exception {
+		byte[] bys = new byte[1024];
+		bys[0] = 23;
+		bys[100] = 44;
+		FileOutputStream fos = new FileOutputStream("build/axx");
+		fos.write(bys);
+		fos.close();
+		//
+		FileInputStream fis = new FileInputStream("build/axx");
+		System.out.println(FUtil.sha1(fis, null));
+		fis.close();
+		//
+		bys = new byte[10];
+		bys[0] = 34;
+		bys[8] = 24;
+		fos = new FileOutputStream("build/axx");
+		fos.write(bys);
+		fos.close();
+		fos = new FileOutputStream("build/axb");
+		fos.write(bys);
+		fos.close();
+		//
+		fis = new FileInputStream("build/axx");
+		System.out.println(FUtil.sha1(fis, null));
+		fis.close();
+		fis = new FileInputStream("build/axb");
+		System.out.println(FUtil.sha1(fis, null));
+		fis.close();
+
+	}
 }
