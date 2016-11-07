@@ -3,6 +3,7 @@
 
 package org.cny.jwf.im.pb;
 
+@SuppressWarnings("unused")
 public final class Msg {
   private Msg() {}
   public static void registerAllExtensions(
@@ -1923,7 +1924,8 @@ public final class Msg {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private RC(
+    
+	private RC(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {

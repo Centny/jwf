@@ -68,14 +68,22 @@ public abstract class IMC extends RWRunnerv implements CmdListener {
 		this.l.onMsg(new Msg(m.V(ImMsg.class)));
 	}
 
-	protected abstract ImMsg create(String[] r, byte t, byte[] c);
+	protected abstract ImMsg create(String i, String[] r, byte t, byte[] c);
+
+	public void sms(String i, String[] r, byte t, byte[] c) throws IOException {
+		this.nv.writev(this.create(i, r, t, c));
+	}
 
 	public void sms(String[] r, byte t, byte[] c) throws IOException {
-		this.nv.writev(this.create(r, t, c));
+		this.sms(null, r, t, c);
 	}
 
 	public void sms(String[] r, int t, byte[] c) throws IOException {
 		this.sms(r, (byte) t, c);
+	}
+
+	public void sms(String i, String[] r, int t, byte[] c) throws IOException {
+		this.sms(i, r, (byte) t, c);
 	}
 
 	public void li(Object args, CmdListener l) throws Exception {

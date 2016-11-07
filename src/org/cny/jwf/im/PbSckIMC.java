@@ -53,7 +53,7 @@ public class PbSckIMC extends SckIMC {
 	}
 
 	@Override
-	protected ImMsg create(String[] r, byte t, byte[] c) {
+	protected ImMsg create(String i, String[] r, byte t, byte[] c) {
 		if (r == null || r.length < 1 || c == null || c.length < 1) {
 			throw new InvalidParameterException("the r/c is null or empty");
 		}
@@ -62,6 +62,9 @@ public class PbSckIMC extends SckIMC {
 		imb.addAllR(rr);
 		imb.setT(t);
 		imb.setC(ByteString.copyFrom(c));
+		if (i != null) {
+			imb.setI(i);
+		}
 		return imb.build();
 	}
 
