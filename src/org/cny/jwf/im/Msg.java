@@ -30,6 +30,7 @@ public class Msg implements Serializable {
 	public String a;
 	public long time;
 	public int status = MS_REV;
+	public String rs;// the read status
 	//
 	// the process rate.
 	public float rate;
@@ -71,6 +72,10 @@ public class Msg implements Serializable {
 		this.c = im.getC().toByteArray();
 		this.a = im.getA();
 		this.time = im.getTime();
+		this.rs = im.getStatus();
+		if ("D".equals(this.rs)) {
+			this.status = MS_READED;
+		}
 	}
 
 	@Name(name = "I")
@@ -125,15 +130,12 @@ public class Msg implements Serializable {
 
 	@Override
 	public String toString() {
-		return "i:" + this.i + ",idx:" + this.idx + ",s:" + this.s + ",r:"
-				+ this.r + ",t:" + this.t + ",d:" + this.d + ",a:" + this.a
-				+ ",time:" + this.time + ",status:" + this.status;
+		return "i:" + this.i + ",idx:" + this.idx + ",s:" + this.s + ",r:" + this.r + ",t:" + this.t + ",d:" + this.d
+				+ ",a:" + this.a + ",time:" + this.time + ",status:" + this.status + ",rs:" + this.rs;
 	}
 
 	public Object[] toObjects() {
-		return new Object[] { this.i, this.idx, this.s,
-				this.r == null ? null : Utils.join(this.r), d, t,
-				this.c == null ? null : new String(this.c), this.a, this.time,
-				this.status };
+		return new Object[] { this.i, this.idx, this.s, this.r == null ? null : Utils.join(this.r), d, t,
+				this.c == null ? null : new String(this.c), this.a, this.time, this.status };
 	}
 }
